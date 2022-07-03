@@ -1,0 +1,112 @@
+<link rel="stylesheet" type="text/css" href="res/css/base.css"/>
+<script type="text/javascript" src="res/js/keycodes.js"></script>
+<script type="text/javascript">
+   var videoBroadcastActionList = [
+                       {name: 'VK_RED', namespace: ' '},
+                       {name: 'VK_GREEN', namespace: ' '},
+                       {name: 'VK_YELLOW', namespace: ' '},
+                       {name: 'VK_BLUE', namespace: ' '},
+                       {name: 'VK_ENTER', namespace: ' '},
+                       {name: 'VK_0', namespace: ' '},
+                       {name: 'VK_9', namespace: ' '},
+                       {name: 'VK_UP', namespace: ' '},
+                       {name: 'VK_DOWN', namespace: ' '},
+                       {name: 'VK_LEFT', namespace: ' '},
+                       {name: 'VK_RIGHT', namespace: ' '},
+                       {name: 'VK_BACK', namespace: ' '},
+                       {name: 'VK_STOP', namespace: ' '},
+                       {name: 'VK_PLAY', namespace: ' '},
+                       {name: 'VK_PAUSE', namespace: ' '},
+                       {name: 'VK_PLAY_PAUSE', namespace: ' '},
+                       {name: 'VK_FAST_FWD', namespace: ' '},
+                       {name: 'VK_REWIND', namespace: ' '},
+                       {name: 'VK_RECORD', namespace: ' '},
+                    ];
+   preloadpage = function() {
+      var testcases = document.getElementById('testcases');
+      var result = document.getElementById('result');
+      for (var it=0, x=0, y=70; it < videoBroadcastActionList.length; ++it) {
+         var elem = document.createElement('div');
+         elem.setAttribute('id','case'+it);
+         elem.setAttribute('class','testname');
+         elem.setAttribute('style', 'left:'+x+'px; top:'+y+'px;');
+         elem.innerHTML = videoBroadcastActionList[it].name;
+         testcases.appendChild(elem);
+
+         elem = document.createElement('img');
+         elem.setAttribute('id','result'+it);
+         elem.setAttribute('class','teststatus_undefined');
+         elem.setAttribute('style', 'left:'+(x+330)+'px; top:'+y+'px;');
+         result.appendChild(elem);
+         y+=30;
+         if ((it+1)%19 == 0) {
+            y=70;
+            x+=380;
+         }
+      }
+      cleartest();
+   }
+   function myload() {
+      preloadpage();
+      execute();
+   }
+   var currenttestcase = 0;
+   function execute() {
+      var testcase = 'KeyEvent.';
+      var testcaseresult;
+      var result = document.getElementById('result'+currenttestcase);
+      try {
+         if (videoBroadcastActionList[currenttestcase].namespace !== ' ') {
+            testcase += videoBroadcastActionList[currenttestcase].namespace + '.';
+         }
+         testcase += videoBroadcastActionList[currenttestcase].name;
+         console.log('test for ' + testcase);
+         testcaseresult = eval(testcase);
+         if (typeof testcaseresult === 'undefined' || typeof testcaseresult === undefined) {
+            result.setAttribute('src','res/img/wrong.gif');
+         } else {
+            result.setAttribute('src','res/img/right.gif');
+            console.log(testcase + ':' + testcaseresult);
+         }
+      } catch(e) {
+         if (result)
+            result.setAttribute('src','res/img/wrong.gif');
+      }
+      ++currenttestcase;
+      if (currenttestcase < videoBroadcastActionList.length) {
+         window.setTimeout(execute,300);
+      }
+   }
+   cleartest = function() {
+      for (var it=0; it < videoBroadcastActionList.length; ++it) {
+         var result = document.getElementById('result'+it);
+         result.setAttribute('src','res/img/hourglass.png');
+      }
+      currenttestcase = 0;
+   }
+   alphatest = function() {
+      cleartest();
+      execute();
+   }
+   starttest = function() {
+      alert('Coming Soon');
+   }
+   document.addEventListener('keyup', function(e) {
+      if (e.keyCode == VK_ENTER) {
+         alphatest();
+      } else if (e.keyCode == VK_BACK || e.keyCode == 8) {
+         window.location.assign("index.html");
+      }
+   }, true);
+</script>
+</head>
+<body onload="myload()">
+<object type="application/oipfApplicationManager"></object>
+<div id='area'>
+<div id='title'>HbbTV Application Smart and Haiku Test # Plugin Property Check</div>
+<div id='stamp'><a target='_blank' href='https://www.linkedin.com/in/shunmugasundaramp/'>Shunmuga Sundaram P</a></div>
+<div id="testcases"></div>
+<div id="result"></div>
+</div>
+</body>
+</html>

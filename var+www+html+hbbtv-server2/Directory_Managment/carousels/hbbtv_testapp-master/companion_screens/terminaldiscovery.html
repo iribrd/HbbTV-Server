@@ -1,0 +1,70 @@
+
+<html>
+<style type="text/css">
+body {
+   background-color: white;
+}
+.plugin {
+   width: 40px;
+   height: 30px;
+   color: red;
+}
+</style>
+<script type="text/javascript">
+
+myload = function() {
+   var obj = document.getElementById('csm');
+   var status = document.getElementById('status');
+   var str = "";
+
+   document.getElementById('bk').focus();
+
+   try {
+      str += "Calling <span style='color:blue'>Boolean discoverTerminals(function onTerminalDiscovery)</span> : ";
+      var ret = obj.discoverTerminals(function(terminals){
+         var tmp = document.getElementById('status').innerHTML;
+         tmp += "<br>'"+terminals.length+"' Terminal(s) available in this network";
+         for (var it=0; it<terminals.length; ++it) {
+            tmp += "<br>====================================";
+            tmp += "<br><span style='color:blue'>EnumId:</span> "+terminals.item(it).enum_id;
+            tmp += "<br><span style='color:blue'>Name:</span> "+terminals.item(it).friendly_name;
+            tmp += "<br><span style='color:blue'>X_HbbTV_App2AppURL:</span> "+terminals.item(it).X_HbbTV_App2AppURL;
+            tmp += "<br><span style='color:blue'>X_HbbTV_InterDevSyncURL:</span> "+terminals.item(it).X_HbbTV_InterDevSyncURL;
+            tmp += "<br><span style='color:blue'>X_HbbTV_UserAgent:</span> "+terminals.item(it).X_HbbTV_UserAgent;
+         }
+         document.getElementById('status').innerHTML = tmp;
+      });
+      str += "<span style=";
+      if (typeof(ret) === "boolean") {
+         str += "'color:green'";
+      } else {
+         str += "'color:red'";
+      }
+      str += '>'+typeof(ret)+'</span> {<span style=';
+      if (ret !== true) {
+         str += "'color:red'";
+      } else {
+         str += "'color:green'";
+      }
+      str += '>'+ret+'</span>}';
+   } catch(e) {
+      str += "<span style='color:red'>Exception</span>";
+   }
+   str += "<br>";
+
+   status.innerHTML = str;
+}
+
+back = function() {
+   document.location.assign("index.html");
+}
+
+</script>
+<body onload="myload()">
+<h1>application/hbbtvCSManager:</h1>
+<h3>Terminal Discovery</h3>
+<a id="bk" href="#" onclick="back()">Back</a>
+<object id="csm" class="plugin" type="application/hbbtvCSManager">Unable to create</object>
+<p id="status"></p>
+</body>
+</html>

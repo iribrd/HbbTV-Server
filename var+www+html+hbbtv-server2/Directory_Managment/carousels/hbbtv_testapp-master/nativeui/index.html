@@ -1,0 +1,474 @@
+
+<html>
+<link rel="icon" type="image/x-icon" href="res/img/favicon.ico"></link>
+<script src="res/js/jquery-3.1.1.min.js"></script>
+<script src="res/js/navigator.js"></script>
+<link rel="stylesheet" href="res/css/theme01.css"></link>
+<link rel="stylesheet" href="res/css/w3.css">
+<script type="text/javascript">
+var k_mainmenu = [
+                    {
+                       title: 'Tuning',
+                       icon: 'res/img/channelscan.png',
+                    },
+                    {
+                       title: 'Channel List',
+                       icon: 'res/img/channellist.png',
+                    },
+                    {
+                       title: 'Settings',
+                       icon: 'res/img/settings.png',
+                    },
+                    {
+                       title: 'EPG Guide',
+                       icon: 'res/img/epg.png',
+                    },
+                    {
+                       title: 'USB',
+                       icon: 'res/img/usb.png',
+                    },
+                    {
+                       title: 'YouTube',
+                       icon: 'res/img/youtube.png',
+                    },
+                    {
+                       title: 'Photos',
+                       icon: 'res/img/pictures.png',
+                    },
+                    {
+                       title: 'Audio Player',
+                       icon: 'res/img/audios.png',
+                    },
+                    {
+                       title: 'Video Player',
+                       icon: 'res/img/videos.png',
+                    },
+                 ];
+
+var k_tunemenu = [
+                    {
+                       type: 'fields',
+                       caption: 'Start Frequency',
+                       property: {
+                                    units: '(MHz)',
+                                    value: 450,
+                                    min: 200,
+                                    max: 900,
+                                    step: 8,
+                                    navright: function() {
+                                       if(k_tunemenu[0].property.value < k_tunemenu[0].property.max) {
+                                          k_tunemenu[0].property.value += k_tunemenu[3].property.value;
+                                          $('#tunevalues'+0).text(k_tunemenu[0].property.value);
+                                       }
+                                    },
+                                    navleft: function() {
+                                       if(k_tunemenu[0].property.value < k_tunemenu[0].property.max) {
+                                          k_tunemenu[0].property.value -= k_tunemenu[3].property.value;
+                                          $('#tunevalues'+0).text(k_tunemenu[0].property.value);
+                                       }
+                                    },
+                                    click: function() {
+                                    }
+                                 },
+                    },
+                    {
+                       type: 'fields',
+                       caption: 'End Frequency',
+                       property: {
+                                    units: '(MHz)',
+                                    value: 850,
+                                    min: 200,
+                                    max: 900,
+                                    step: 8,
+                                    navright: function() {
+                                       if(k_tunemenu[1].property.value < k_tunemenu[1].property.max) {
+                                          k_tunemenu[1].property.value += k_tunemenu[3].property.value;
+                                          $('#tunevalues'+1).text(k_tunemenu[1].property.value);
+                                       }
+                                    },
+                                    navleft: function() {
+                                       if(k_tunemenu[1].property.value < k_tunemenu[1].property.max) {
+                                          k_tunemenu[1].property.value -= k_tunemenu[3].property.value;
+                                          $('#tunevalues'+1).text(k_tunemenu[1].property.value);
+                                       }
+                                    },
+                                    click: function() {
+                                    }
+                                 },
+                    },
+                    {
+                       type: 'fields',
+                       caption: 'Scan Raster',
+                       property: {
+                                    units: '(MHz)',
+                                    value: 8,
+                                    min: 0,
+                                    max: 20,
+                                    step: 1,
+                                    navright: function() {
+                                       if(k_tunemenu[2].property.value < k_tunemenu[2].property.max) {
+                                          k_tunemenu[2].property.value += 1;
+                                          $('#tunevalues'+2).text(k_tunemenu[2].property.value);
+                                       }
+                                    },
+                                    navleft: function() {
+                                       if(k_tunemenu[2].property.value < k_tunemenu[2].property.max) {
+                                          k_tunemenu[2].property.value -= 1;
+                                          $('#tunevalues'+2).text(k_tunemenu[2].property.value);
+                                       }
+                                    },
+                                    click: function() {
+                                    }
+                                 },
+                    },
+                    {
+                       type: 'fields',
+                       caption: 'Bandwidth',
+                       property: {
+                                    units: '(MHz)',
+                                    value: 8,
+                                    min: 0,
+                                    max: 10,
+                                    step: 1,
+                                    navright: function() {
+                                       if(k_tunemenu[3].property.value < k_tunemenu[3].property.max) {
+                                          k_tunemenu[3].property.value += 1;
+                                          $('#tunevalues'+3).text(k_tunemenu[3].property.value);
+                                       }
+                                    },
+                                    navleft: function() {
+                                       if(k_tunemenu[3].property.value < k_tunemenu[3].property.max) {
+                                          k_tunemenu[3].property.value -= 1;
+                                          $('#tunevalues'+3).text(k_tunemenu[3].property.value);
+                                       }
+                                    },
+                                    click: function() {
+                                    }
+                                 },
+                    },
+                    {
+                       type: 'button',
+                       caption: 'Scan',
+                       property: {
+                                    click: function() {
+                                       var start = parseInt(k_tunemenu[0].property.value);
+                                       var end = parseInt(k_tunemenu[1].property.value);
+                                       var raster = parseInt(k_tunemenu[2].property.value);
+                                       var bw = parseInt(k_tunemenu[3].property.value);
+                                       $('#tunestatus').show();
+                                       navigator.tune(start, end, raster, bw, function(scanEvent, progress, frequency, 
+                                                                                       signalStrength, channelNumber, channelType, 
+                                                                                       channelCount, transponderCount, newChannel) {
+                                          if (scanEvent == 4) {
+                                             //statusstr += "Completed";
+                                             if (channelCount <= 0) {
+                                                $('#tuneprogressfreq').text('Failed to tune...');
+                                             } else {
+                                                $('#tuneprogressfreq').text('Opening Channellist Menu...');
+                                                window.setTimeout(function() {
+                                                   showChannelListMenu();
+                                                }, 2000);
+                                             }
+                                          } else if (scanEvent == 5) {
+                                             //statusstr += "Aborted";
+                                          } else if (scanEvent == 1){
+                                             //statusstr += "Channels: " + channelCount + "<br>";
+                                             if (channelCount < 0) channelCount = 0;
+                                             $('#tunechannelcount').html(channelCount+"<br><span style='font-size: 18px;'>Channels Found</span>");
+                                             $('#tuneprogresscaption').text(progress+' %');
+                                             $('#tuneprogressfreq').text(frequency/1000+' MHz');
+                                             //$('#tuneprogress').css({width: progress+'%'});
+                                             $('#tuneprogress').animate({width: progress+'%'}, 500);
+                                          }
+                                       });
+                                    }
+                                 },
+                    },
+                    {
+                       type: 'button',
+                       caption: 'Main Menu',
+                       property: {
+                                    click: function() {
+                                       showMainMenu();
+                                    }
+                                 },
+                    },
+                 ];
+
+var k_acttunemenuindex = 0;
+var k_actmainmenuindex = 0;
+var k_maxrow = 0;
+var k_rowsize = 7;
+var k_itemheight = 175;
+var k_itemwidth = 150;
+var k_opts = false;
+var k_selected = 0;
+
+showMainMenu = function() {
+   navigator.bindToCurrentChannel();
+   $('#tunemenu').hide();
+   $('#channelmenu').hide();
+   $('#mainmenu').fadeTo(500, 1.0);
+   $('#bg0' + k_actmainmenuindex).addClass("icon-focus");
+   $(document).off('keydown').on('keydown', mainmenuKeyEventListener);
+   $('#subheader').text("Main Menu");
+}
+
+showTuneMenu = function() {
+   $('#channelmenu').hide();
+   $('#tunestatus').hide();
+   $('#mainmenu').fadeOut(function() {
+       $('#tunemenu').fadeTo(100, 1.0);
+       $('#subheader').text("Tuning Menu");
+   });
+
+   $(document).off('keydown').on('keydown', tunemenuKeyEventListener);
+}
+
+showChannelListMenu = function() {
+   navigator.bindToCurrentChannel();
+   $('#tunemenu').hide();
+   $('#mainmenu').hide();
+   $('#channellist').hide();
+   $('#channelmenu').show();
+
+   prepareChannelListMenu();
+   navigator.setVideoBroadcastPosition(490, 200, 670, 413);
+   $('#channellist').fadeTo(500, 1.0);
+   $('#subheader').text("ChannelList");
+
+   $(document).off('keydown').on('keydown', channellistKeyEventListener);
+}
+
+prepareMainMenu = function() {
+   k_maxrow = 0;
+   var x=0, y=0;
+   $('#mainmenulist').html('');
+   $('#mainmenulist').append("<li id='row"+k_maxrow+"'></li>");
+   for (var it=0; it < k_mainmenu.length; ++it) {
+      $('#row'+k_maxrow).append("<div id='bg0"+it+"' class='icon-nonfocus' style='left:"+x+"px; top: "+y+"px;'></div>");
+      $('#bg0'+it).append("<div id='b0"+it+"' class='icon' style='background-image: url("+k_mainmenu[it].icon+");'></div>");
+      $('#bg0'+it).append("<div id='t0"+it+"' class='icon-caption'>"+k_mainmenu[it].title+"</div>");
+      if (0 == ((it+1)%k_rowsize)) {
+         x = 0;
+         y += k_itemheight;
+         if ((it+1) < k_mainmenu.length) {
+            ++k_maxrow;
+            $('#mainmenulist').append("<li id='row"+k_maxrow+"'></li>");
+         }
+      } else {
+         x += k_itemwidth;
+      }
+   }
+}
+
+prepareTuneMenu = function() {
+   $('#tunecaption').html("");
+   $('#tuneunits').html("");
+   $('#tunevalues').html("");
+   for (var it=0; it < k_tunemenu.length; ++it) {
+      if (k_tunemenu[it].type == 'fields') {
+         $('#tunecaption').append("<div id='tunecaption"+it+"' class='tunemenucaption'>"+k_tunemenu[it].caption+"</div>");
+         $('#tuneunits').append("<div id='tuneunits"+it+"' class='tunemenucaption'>"+k_tunemenu[it].property.units+"</div>");
+         $('#tunevalues').append("<div id='tunevalues"+it+"' class='tunemenucaption'>"+k_tunemenu[it].property.value+"</div>");
+      } else if (k_tunemenu[it].type == 'button') {
+         $('#tunevalues').append("<div id='tunevalues"+it+"' class='tunemenucaption'>"+k_tunemenu[it].caption+"</div>");
+      }
+   }
+   $('#tunevalues0').addClass('tunemenufocus');
+}
+
+prepareChannelListMenu = function() {
+   $('#channellist').html("");
+
+   var channellist = navigator.getChannelList();
+   for (var it =0; it < channellist.length; ++it) {
+      $('#channellist').append("<li name='"+it+"' id='clist"+it+"'>"+channellist.item(it).name+"</li>");
+   }
+   if (channellist.length) {
+      setChannel(0);
+   }
+   menuInit();
+}
+
+$(document).ready(function() {
+   navigator.init();
+   prepareMainMenu();
+   prepareTuneMenu();
+   showMainMenu();
+   //showTuneMenu();
+   //navigator.setVideoBroadcastPosition(490, 200, 670, 413);
+});
+
+disallowKeyEvents = function(event) {
+   event.preventDefault();
+   event.stopPropagation();
+}
+
+mainmenuKeyEventListener = function(event) {
+    var lastfocus = k_actmainmenuindex;
+    var listOfDropDownItems = $('#mainmenulist')[0];
+    if (event.keyCode == 97) {
+        document.location.reload();
+        return;
+    } else if (event.keyCode == 8) {
+        history.back();
+    } else if (event.keyCode == 13) {
+        if(k_mainmenu[k_actmainmenuindex].title == 'Tuning') {
+           showTuneMenu();
+        } else if (k_mainmenu[k_actmainmenuindex].title == 'Channel List') {
+           showChannelListMenu();
+        }
+        return;
+    } else if (event.keyCode == 39) {
+        // checking last item
+        if (k_actmainmenuindex == k_mainmenu.length - 1) {
+           disallowKeyEvents(event);
+           return;
+        }
+        ++k_actmainmenuindex;
+    } else if (event.keyCode == 37) {
+        // checking first item
+        if (k_actmainmenuindex == 0) {
+           disallowKeyEvents(event);
+           return;
+        }
+        --k_actmainmenuindex;
+    } else if (event.keyCode == 38) {
+        // checking first row
+        if (Math.floor(k_actmainmenuindex/k_rowsize) == 0) {
+           disallowKeyEvents(event);
+           return;
+        }
+        k_actmainmenuindex -= k_rowsize;
+    } else if (event.keyCode == 40) {
+        // checking last row
+        if (Math.floor(k_actmainmenuindex/k_rowsize) == k_maxrow) {
+           disallowKeyEvents(event);
+           return;
+        }
+        k_actmainmenuindex += k_rowsize;
+        if (k_mainmenu.length <= k_actmainmenuindex) {
+           k_actmainmenuindex = k_mainmenu.length-1;
+        }
+    } else {
+        return;
+    }
+    listOfDropDownItems.scrollTop = Math.floor(k_actmainmenuindex/k_rowsize)*k_itemheight;
+    disallowKeyEvents(event);
+    $('#bg0'+lastfocus).removeClass("icon-focus").addClass("icon-nonfocus");
+    $('#bg0'+k_actmainmenuindex).removeClass("icon-nonfocus").addClass("icon-focus");
+}
+
+tunemenuKeyEventListener = function(event) {
+    var lastfocus = k_acttunemenuindex;
+    if (event.keyCode == 27) {
+        document.location.reload();
+        return;
+    } else if (event.keyCode == 8) {
+        showMainMenu();
+        return;
+    } else if (event.keyCode == 13) {
+        k_tunemenu[k_acttunemenuindex].property.click();
+    } else if (event.keyCode == 39) {
+        k_tunemenu[k_acttunemenuindex].property.navright();
+        return;
+    } else if (event.keyCode == 37) {
+        k_tunemenu[k_acttunemenuindex].property.navleft();
+        return;
+    } else if (event.keyCode == 38) {
+        if (k_acttunemenuindex <= 0) {
+           return;
+        }
+        --k_acttunemenuindex;
+    } else if (event.keyCode == 40) {
+        if (k_acttunemenuindex >= k_tunemenu.length-1) {
+           return;
+        }
+        ++k_acttunemenuindex;
+    } else {
+        return;
+    }
+    disallowKeyEvents(event);
+
+    $('#tunevalues'+lastfocus).removeClass("tunemenufocus");
+    $('#tunevalues'+k_acttunemenuindex).addClass("tunemenufocus");
+}
+
+channellistKeyEventListener = function(event) {
+   var kc = event.keyCode;
+   if (kc==38) {
+      menuSelect(k_selected-1);
+      return true;
+   } else if (kc == 8) {
+      showMainMenu();
+      return;
+   } else if (kc==40) {
+      menuSelect(k_selected+1);
+      return true;
+   } else if (kc==37){
+      menuSelect(k_selected-6);
+      return true;
+   } else if (kc==39){
+      menuSelect(k_selected+6);
+      return true;
+   } else if (kc==13) {
+      var liid = k_opts[k_selected].getAttribute('name');
+      setChannel(parseInt(liid));
+      return true;
+   }
+}
+
+function menuInit() {
+   k_opts = document.getElementById('channellist').getElementsByTagName('li');
+   menuSelect(0);
+}
+function menuSelect(i) {
+   if (i<=0) {
+     i = 0;
+   } else if (i>=k_opts.length) {
+     i = k_opts.length-1;
+   }
+   k_selected = i;
+   var scroll = Math.max(0, Math.min(k_opts.length-12, k_selected-6));
+   for (i=0; i<k_opts.length; i++) {
+     k_opts[i].style.display = (i>=scroll && i<scroll+12) ? 'block' : 'none';
+     k_opts[i].className = k_selected==i ? 'lisel' : '';
+   }
+}
+
+setChannel = function(id) {
+   navigator.setChannel(navigator.getChannelList().item(id));
+};
+
+
+</script>
+<body>
+   <div id="header" class="header">Native Application</div>
+   <div id="subheader" class="subheader"></div>
+   <div id="mainmenu" style="display:none">
+      <ul id='mainmenulist'></ul>
+   </div>
+   <div id="tunemenu" style="display:none">
+      <div id="tunecaption"></div>
+      <div id="tuneunits"></div>
+      <div id="tunevalues"></div>
+      <div id="tunestatus">
+         <div id="tuneprogressbg">
+            <div id="tuneprogress"></div>
+         </div>
+         <div id="tuneprogresscaption">0%</div>
+         <div id="tuneprogressfreq"></div>
+      </div>
+      <img id="navhorizontal" src="res/img/navhorizontalblack.png"></img>
+      <div id="navhorizontalcaption">Change Values</div>
+      <div id="tunechannelcount"></div>
+   </div>
+   <div id="channelmenu" style="display:none">
+      <ul id='channellist' class="channellist"></ul>
+      <video id="html5video" style="position: absolute; left: 430px; top: 0px; width: 670px; height: 413px;border:2px solid black;"  >
+        <source src="oipf://" type="video/mp4">
+      </video>
+   </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+Stream event objects is created...tap,.eid,.ename.......................................................................................
+Event ste_5_1.ts is created..............................................................................
+total carousel section number is 5
+carousel head period is every 2 section
+stream_events_test_carousel0.ts
+pmt.ts
+ait.ts
+total carousel section number is 322
+carousel head period is every 161 section
+global_pi1.ts
+pmt.ts
+ait.ts
+########################################################################################################################
+..................................................................................
+service recorde:.......................................................................
+{'PAT_bitrate': 3008L, 'application_id': 19L, 'service_provider_name': 'IRIB R&D', 'net_id': 1L, 'carousel_bitrate': 1000000L, 'application_type': 16L, 'pid_br_setting_ID': 1L, 'application_folder_path': 'stream_events_test_carousel', 'PMT_bitrate': 3008L, 'app_setting_ID': 6L, 'audio_stream_type': 3L, 'application_profile_maj': 1L, 'id': 7L, 'net_setting_ID': 1L, 'AIT_bitrate': 1400L, 'application_control_code': 0L, 'pmt_version': 1L, 'module_version': 5L, 'streamevent_bitrate': 2000L, 'transport_protocol_id': 1L, 'SDT_bitrate': 1500L, 'NIT_pid': 16L, 'video_pid': 100L, 'AIT_pid': 1131L, 'original_net_id': 1L, 'application_profile_min': 1L, 'mount_frequency': 2L, 'carousel_pid': 2103L, 'application_profile_mic': 1L, 'smart_compress_the_carousel': 0L, 'PMT_pid': 1031L, 'video_stream_type': 2L, 'NIT_bitrate': 1400L, 'PAT_pid': 0L, 'application_priority': 1L, 'visibility': 2L, 'service_name': 'ste_test_1', 'transport_stream_id': 1L, 'application_version': 1L, 'streamevent_pid': 2205L, 'organisation_id': 7L, 'application_profile': 0L, 'component_tag': 100L, 'DDB_size': 4066L, 'carousel_association_tag': 11L, 'audio_pid': 110L, 'net_name': 'jahad_Hbb', 'application_usage': 0L, 'application_name': 'app6', 'service_id': 5L, 'application_index_file': 'index.html', 'service_bound_flag': 1, 'carousel_id': 20L, 'SDT_pid': 17L}
+...........................................................
+tstool /home/Hbb-server/darabi/server_backend/color_bar_a.ts  -c  257:110 -o /home/Hbb-server/darabi/server_backend/temp/color_bar_a110.ts > /dev/null
+tstool /home/Hbb-server/darabi/server_backend/color_bar_v.ts  -c  256:100 -o /home/Hbb-server/darabi/server_backend/temp/color_bar_v100.ts > /dev/null
+..................................................................................
+service recorde:.......................................................................
+{'PAT_bitrate': 3008L, 'application_id': 13L, 'service_provider_name': 'IRIB R&D', 'net_id': 1L, 'carousel_bitrate': 1000000L, 'application_type': 16L, 'pid_br_setting_ID': 1L, 'application_folder_path': 'global_pi', 'PMT_bitrate': 3008L, 'app_setting_ID': 18L, 'audio_stream_type': 3L, 'application_profile_maj': 1L, 'id': 13L, 'net_setting_ID': 1L, 'AIT_bitrate': 1400L, 'application_control_code': 0L, 'pmt_version': 1L, 'module_version': 12L, 'streamevent_bitrate': 2000L, 'transport_protocol_id': 1L, 'SDT_bitrate': 1500L, 'NIT_pid': 16L, 'video_pid': 102L, 'AIT_pid': 1133L, 'original_net_id': 1L, 'application_profile_min': 1L, 'mount_frequency': 2L, 'carousel_pid': 2106L, 'application_profile_mic': 1L, 'smart_compress_the_carousel': 2L, 'PMT_pid': 1033L, 'video_stream_type': 2L, 'NIT_bitrate': 1400L, 'PAT_pid': 0L, 'application_priority': 2L, 'visibility': 2L, 'service_name': 'test_teletxt', 'transport_stream_id': 1L, 'application_version': 1L, 'streamevent_pid': 2207L, 'organisation_id': 1L, 'application_profile': 0L, 'component_tag': 0L, 'DDB_size': 4066L, 'carousel_association_tag': 111L, 'audio_pid': 112L, 'net_name': 'jahad_Hbb', 'application_usage': 1L, 'application_name': 'my app', 'service_id': 7L, 'application_index_file': 'index.htm', 'service_bound_flag': 1, 'carousel_id': 23L, 'SDT_pid': 17L}
+teletext is on !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+...........................................................
+tstool /home/Hbb-server/darabi/server_backend/color_bar_a.ts  -c  257:112 -o /home/Hbb-server/darabi/server_backend/temp/color_bar_a112.ts > /dev/null
+tstool /home/Hbb-server/darabi/server_backend/color_bar_v.ts  -c  256:102 -o /home/Hbb-server/darabi/server_backend/temp/color_bar_v102.ts > /dev/null
+nit.ts
+sdt.ts
+pat.ts
+................................................................
+tscbrmuxer b:2000  /home/Hbb-server/darabi/server_backend/temp/tempste_5_.ts b:384000  temp/color_bar_a110.ts b:997000 temp/color_bar_v100.ts b:3008 temp/pmt0.ts b:1400 temp/ait0.ts b:1000000 temp/stream_events_test_carousel0.ts b:384000  temp/color_bar_a112.ts b:997000 temp/color_bar_v102.ts b:3008 temp/pmt1.ts b:1400 temp/ait1.ts b:1000000 temp/global_pi1.ts b:1400 temp/nit.ts b:1500 temp/sdt.ts b:3008 temp/pat.ts b:8221276 null.ts  > fifo11.ts &

@@ -1,0 +1,139 @@
+
+<html>
+<style type="text/css">
+body {
+   background-image: url('res/img/csdemo.png');
+   background-repeat: no-repeat; 
+   background-size: 100% 100%; 
+   overflow-x: hidden;
+   overflow-y: hidden;
+   width: 1280px;
+   height: 720px;
+   font: 20px sans-serif;
+}
+#rarrow { position: absolute; left: 650px; top: 566px; width: 20px; height: 60px; background-image: url("res/img/right-arrow-0.png"); background-size: 100% 100%;}
+#larrow { position: absolute; left: 610px; top: 566px; width: 20px; height: 60px; background-image: url("res/img/left-arrow-0.png"); background-size: 100% 100%;}
+*:focus { outline: none; }
+.heading{ border-style: solid; border-width: 2px; background-color: rgb(57,6,74); -webkit-border-radius: 5px; border: 4px solid rgb(57,6,74); box-shadow: 10px 10px 10px #444444; color: white; text-align: center; opacity: 0.9;}
+.focus{
+   position: relative; opacity: 1.0; width: 163px; height: 93px; color: black; background-color: rgba(255, 255, 255,0.1); font-size: 18px;
+   -webkit-border-radius: 5px; text-align: center;
+   border: 2px solid black;
+   box-shadow: -10px -5px 10px rgba(5,5,5,0.9);
+   padding: -10px;
+}
+.unfocus{
+   position: relative; opacity: 0.5; width: 143px; height: 73px; color: black; background-color: rgba(255, 255, 255,0.1); font-size: 18px;
+   -webkit-border-radius: 5px; text-align: center;
+   border: none;
+   padding: 10px;
+}
+#desk {
+   position: absolute; 
+   left: 0px; 
+   top: 430px; 
+}
+</style>
+<script type="text/javascript">
+    var contents = [
+                      {
+                         name     : "About Me", 
+                         nonfocus : "res/img/desc-nonfocus.png", 
+                         focus    : "res/img/desc-focus.png", 
+                         url      : "aboutme.html"
+                      },
+                      {
+                         name     : "Terminal Discovery", 
+                         nonfocus : "res/img/terminal-disc-nonfocus.png", 
+                         focus    : "res/img/terminal-disc-focus.png", 
+                         url      : "terminaldiscovery.html"
+                      },
+                      {
+                         name     : "Mobile/Tablet Discovery", 
+                         nonfocus : "res/img/mobile-disc-nonfocus.png", 
+                         focus    : "res/img/mobile-disc-focus.png", 
+                         url      : "csdiscovery.html"
+                      },
+                   ];
+    var curitem =1;
+    launch = function(url) {
+        document.location.assign(url);
+    }
+    myload = function() {
+        var elem1;
+        for (var it=0, left=(1280-((163*contents.length)+(50*(contents.length-1))))/2; it < contents.length; ++it, left+=50) {
+            elem1 = document.createElement('img');
+            elem1.setAttribute('id', 'b'+it);
+            elem1.setAttribute('src', contents[it].nonfocus);
+            elem1.setAttribute('style', 'left: '+left+'px; top: 10px;');
+            elem1.setAttribute('class', 'unfocus');
+            document.getElementById('desk').appendChild(elem1);
+        }
+        document.getElementById('b'+curitem).src=contents[curitem].focus;
+        document.getElementById('b'+curitem).className="focus";
+        document.getElementById('title').innerHTML=contents[curitem].name;
+
+        document.addEventListener('keydown', keyreceiver, false);
+    }
+
+    moveForward = function() {
+        if (curitem < contents.length-1) {
+            ++curitem;
+        }
+        if (curitem == contents.length-1) {
+            return true;
+        }
+        return false;
+    }
+    moveBackward = function() {
+        if (curitem > 0) {
+            --curitem;
+        }
+        if (curitem == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    keyreceiver = function (event) {
+        var preventFwdNav = false; var preventBkdNav = false;
+        event.preventDefault();
+        event.stopPropagation();
+        var lastfocus = curitem;
+        if (event.keyCode == 27) {
+            document.location.reload();
+            return;
+        } else if (event.keyCode == 13) {
+            launch(contents[curitem].url);
+            return;
+        } else if (event.keyCode == 39) {
+            preventFwdNav = moveForward();
+        } else if (event.keyCode == 37) {
+            preventBkdNav = moveBackward();
+        } else if (event.keyCode == 8) {
+            window.location.assign("../index.html");
+        } else {
+            return;
+        }
+        document.getElementById('title').innerHTML=contents[curitem].name;
+
+        if (preventFwdNav) document.getElementById('rarrow').style.opacity=0.2;
+        else document.getElementById('rarrow').style.opacity=1.0;
+        if (preventBkdNav) document.getElementById('larrow').style.opacity=0.2;
+        else document.getElementById('larrow').style.opacity=1.0;
+
+        document.getElementById('b'+lastfocus).className="unfocus";
+        document.getElementById('b'+curitem).className="focus";
+        document.getElementById('b'+lastfocus).src=contents[lastfocus].nonfocus;
+        document.getElementById('b'+curitem).src=contents[curitem].focus;
+    };
+</script>
+
+<body onload="myload()">
+<div id="desk"></div>
+<div id="larrow"></div>
+<div id="rarrow"></div>
+<p id="title" style="position:absolute;left:0px; top: 360px; width: 1280px; text-align: center; color:white;"></p>
+</body>
+</html>
+

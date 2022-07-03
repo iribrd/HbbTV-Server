@@ -1,0 +1,239 @@
+<link rel="stylesheet" type="text/css" href="res/css/base.css"/>
+<script type="text/javascript" src="res/js/keycodes.js"></script>
+<style type="text/css">
+.videobroadcast {
+  position: absolute; left: 560px; top: 135px; width: 576px; height: 324px;
+  box-shadow: 0px 0px 10px black;
+}
+#infocaption_group {
+  position:absolute;
+  left: 600px; 
+  top:450px;
+  font-size: 20px;
+}
+.infocaption {
+  width: 120px;
+  text-align:right;
+  color: white;
+}
+#infovalue_group {
+  position:absolute;
+  left: 750px; 
+  top:450px;
+  font-size: 20px;
+}
+.infovalue {
+  width: 320px;
+  color: white;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+</style>
+
+<script type="text/javascript">
+   var channellist;
+   var videobroadcast;
+   var opts = false;
+   var selected = 0;
+   function myload() {
+      try {
+         videobroadcast = document.getElementById('videobroadcast');
+      } catch(e) {
+         document.getElementById('videobroadcast').innerHTML = 'Exception(1)';
+         return;
+      }
+      try {
+         bindToCurrentChannel();
+         channellist = videobroadcast.getChannelConfig().channelList;
+         if (channellist.length) {
+            var it =0;
+            for (; it < channellist.length; ++it) {
+               var elem = document.createElement("li");
+               elem.setAttribute('name',it);
+               elem.setAttribute('id','b'+it);
+               elem.innerHTML = channellist.item(it).name;
+               document.getElementById('menu').appendChild(elem);
+            }
+            ++it;
+            var elem = document.createElement("li");
+            elem.setAttribute('name','nextChannel');
+            elem.setAttribute('id','b'+it);
+            elem.innerHTML = 'nextChannel()';
+            document.getElementById('menu').appendChild(elem);
+
+            ++it;
+            elem = document.createElement("li");
+            elem.setAttribute('name','prevChannel');
+            elem.setAttribute('id','b'+it);
+            elem.innerHTML = 'prevChannel()';
+            document.getElementById('menu').appendChild(elem);
+
+            videobroadcast.onChannelChangeSucceeded = function() {
+               if (videobroadcast.currentChannel) {
+                  updateChannelInfo(videobroadcast.currentChannel, 1);
+               } else {
+                  updateChannelInfo(null, -1);
+               }
+            };
+
+            setChannel(0);
+         } else {
+            document.getElementById('videobroadcast').innerHTML = 'Channellist is empty';
+         }
+      } catch(e) {
+         document.getElementById('videobroadcast').innerHTML = 'Exception(2)';
+         //return;
+      }
+      menuInit();
+      //setvidsize(700,150,448,252);
+   }
+   function handleKeyCode(kc) {
+      if (kc==VK_UP) {
+        menuSelect(selected-1);
+        return true;
+      } else if (kc==VK_DOWN) {
+        menuSelect(selected+1);
+        return true;
+      } else if (kc==VK_LEFT){
+        menuSelect(selected-6);
+        return true;
+      } else if (kc==VK_RIGHT){
+        menuSelect(selected+6);
+        return true;
+      } else if (kc==VK_ENTER) {
+        var liid = opts[selected].getAttribute('name');
+        updateChannelInfo(null, 0);
+        if (liid=='nextChannel') {
+          nextChannel();
+        } else if (liid=='prevChannel') {
+          prevChannel();
+        } else {
+          setChannel(parseInt(liid));
+        }
+        return true;
+      } else if (kc == VK_BACK || kc == 8) {
+        window.location.assign("index.html");
+      }
+      return false;
+   }
+   bindToCurrentChannel = function() {
+      try {
+         videobroadcast.bindToCurrentChannel();
+         window.setTimeout(function() {
+           updateChannelInfo(videobroadcast.currentChannel, 1);
+         },5000);
+      } catch(e) {}
+   }
+   setChannel = function(id) {
+      try {
+         videobroadcast.setChannel(channellist.item(id));
+         window.setTimeout(function() {
+           updateChannelInfo(videobroadcast.currentChannel, 1);
+         },5000);
+      } catch(e) {}
+   };
+   nextChannel = function() {
+      try {
+         videobroadcast.nextChannel();
+         window.setTimeout(function() {
+           updateChannelInfo(videobroadcast.currentChannel, 1);
+         },5000);
+      } catch(e) {}
+   }
+   prevChannel = function() {
+      try {
+         videobroadcast.prevChannel();
+         window.setTimeout(function() {
+           updateChannelInfo(videobroadcast.currentChannel, 1);
+         },5000);
+      } catch(e) {}
+   }
+   document.addEventListener("keydown", function(e) {
+         if (handleKeyCode(e.keyCode)) {
+            e.preventDefault();
+            e.stopPropagation();
+         }
+      }, true);
+   function menuInit() {
+     opts = document.getElementById('menu').getElementsByTagName('li');
+     menuSelect(0);
+   }
+   function menuSelect(i) {
+     if (i<=0) {
+       i = 0;
+     } else if (i>=opts.length) {
+       i = opts.length-1;
+     }
+     selected = i;
+     var scroll = Math.max(0, Math.min(opts.length-13, selected-6));
+     for (i=0; i<opts.length; i++) {
+       opts[i].style.display = (i>=scroll && i<scroll+13) ? 'block' : 'none';
+       opts[i].className = selected==i ? 'lisel' : '';
+     }
+   }
+   updateChannelInfo = function(channel, stat) {
+      if (stat == 1 && !channel) {
+         stat = 0;
+      }
+      if (stat == 1) {
+         document.getElementById('channel_name').innerHTML = channel.name;
+         document.getElementById('channel_triplet').innerHTML = 'dvb://'+channel.onid + '.' + channel.tsid + '.' + channel.sid;
+         try {
+            var now = videobroadcast.programmes.item(0);
+            document.getElementById('channel_now').innerHTML = now.name;
+         } catch(e) {
+            document.getElementById('channel_now').innerHTML = 'failed';
+         }
+         try {
+            var next = videobroadcast.programmes.item(1);
+            document.getElementById('channel_next').innerHTML = next.name;
+         } catch(e) {
+            document.getElementById('channel_next').innerHTML = 'failed';
+         }
+      } else if (stat == -1) {
+         document.getElementById('channel_name').innerHTML = 'failed';
+         document.getElementById('channel_triplet').innerHTML = 'failed';
+         document.getElementById('channel_now').innerHTML = 'failed';
+         document.getElementById('channel_next').innerHTML = 'failed';
+      } else {
+         document.getElementById('channel_name').innerHTML = 'waiting';
+         document.getElementById('channel_triplet').innerHTML = 'waiting';
+         document.getElementById('channel_now').innerHTML = 'waiting';
+         document.getElementById('channel_next').innerHTML = 'waiting';
+      }
+   };
+   function setvidsize(x, y, w, h) {
+     //videobroadcast.style.position = 'absolute'; 
+     videobroadcast.style.left = x+'px'; 
+     videobroadcast.style.top = y+'px'; 
+     videobroadcast.style.width = w+'px'; 
+     videobroadcast.style.height = h+'px'; 
+   }
+
+</script>
+</head>
+<body onload="myload()">
+<div id='area'>
+   <div id='title'>HbbTV Application Smart and Haiku Test # Simple Play</div>
+   <div id='stamp'><a target='_blank' href='https://www.linkedin.com/in/shunmugasundaramp/'>Shunmuga Sundaram P</a></div>
+   <div id="btn_group"></div>
+   <ul id="menu" class="menu" style="left: 20px; top: 100px;"></ul>
+   <div id="infocaption_group">
+      <div class="infocaption">Channel :</div>
+      <div class="infocaption">Triplet :</div>
+      <div class="infocaption">Now Event :</div>
+      <div class="infocaption">Next Event :</div>
+   </div>
+
+   <div id="infovalue_group">
+      <div id="channel_name" class="infovalue"></div>
+      <div id="channel_triplet" class="infovalue"></div>
+      <div id="channel_now" class="infovalue"></div>
+      <div id="channel_next" class="infovalue"></div>
+   </div>
+</div>
+
+<!--<video src="oipf://" id="vb_bg" class="videobroadcast" style="border: 2px solid red;"></video>-->
+<object id="videobroadcast" class="videobroadcast" type="video/broadcast"></object>
+</body>
+</html>

@@ -1,0 +1,1 @@
+tscbrmuxer b:384000  temp/color_bar_a112.ts b:997000 temp/color_bar_v102.ts b:3008 temp/pmt0.ts b:1400 temp/ait0.ts b:1000000 temp/global_pi0.ts b:384000  temp/color_bar_a114.ts b:997000 temp/color_bar_v104.ts b:3008 temp/pmt1.ts b:1400 temp/ait1.ts b:1000000 temp/application_501.ts b:1400 temp/nit.ts b:1500 temp/sdt.ts b:3008 temp/pat.ts b:8223276 null.ts  > fifo11.ts &

@@ -1,0 +1,272 @@
+
+<html>
+<style type="text/css">
+body {
+   background-color: white;
+}
+</style>
+<script type="text/javascript">
+
+function setCookie(cname,cvalue,exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname+"="+cvalue+"; "+expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+myload = function() {
+   var status = document.getElementById('status');
+   document.getElementById('bk').focus();
+   var videobroadcast = document.getElementById('videobroadcast');
+   try {
+      videobroadcast.bindToCurrentChannel();
+      var ch = videobroadcast.currentChannel;
+      var tmp = '';
+      tmp += 'name: ' +ch.name;
+      tmp += '<br>idtype: '+12;
+      tmp += '<br>onid: '+ch.onid;
+      tmp += '<br>tsid: '+ch.tsid;
+      tmp += '<br>sid: '+ch.sid;
+      setCookie('chname', ch.name, 365);
+      setCookie('chidtype', 12, 365);
+      setCookie('chonid', ch.onid, 365);
+      setCookie('chtsid', ch.tsid, 365);
+      setCookie('chsid', ch.sid, 365);
+      setCookie('chsourceid', "", 365);
+      setCookie('chbroadcastid', "", 365);
+      status.innerHTML = "Cookie Updated: " + tmp;
+   } catch(e) {
+      var name = getCookie("chname");
+      var idtype = getCookie("chidtype");
+      var onid = getCookie("chonid");
+      var tsid = getCookie("chtsid");
+      var sid = getCookie("chsid");
+      var sourceid = getCookie("chsourceid");
+      var broadcastid = getCookie("chbroadcastid");
+      status.innerHTML = "Channel Retrieved from Cookie : " + name;
+
+      var ch = videobroadcast.createChannelObject(idtype, onid, tsid, sid, sourceid, broadcastid);
+      status.innerHTML = "Channel Retrieved from Cookie and restored";
+
+      videobroadcast.setChannel(ch);
+   }
+   window.setTimeout(function() {
+      transition_to_related("This is a Broadcast Related Application");
+   }, 1000);
+}
+
+var statusstr = "";
+
+transition_to_related = function(caption) {
+   var status = document.getElementById('status');
+   var videobroadcast = document.getElementById('videobroadcast');
+
+   statusstr += "<br><br><b>"+caption+"</b>";
+   try {
+      statusstr += "<br>bindToCurrentChannel: <span style=";
+      videobroadcast.bindToCurrentChannel();
+      statusstr += "'color:green'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:red'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be PASS</span>)";
+
+   statusstr += "<br>playstate is: <span style=";
+   if (0 != videobroadcast.playState) {
+      statusstr += "'color:green'>";
+   } else {
+      statusstr += "'color:red'>";
+   }
+   statusstr += videobroadcast.playState + "</span> (<span style='color:blue'>should not be 0</span>)";
+
+   try {
+      statusstr += "<br>currentChannel: <span style=";
+      if (null !== videobroadcast.currentChannel)
+         statusstr += "'color:green'>PASS</span>";
+      else
+         statusstr += "'color:red'>FAIL</span>";
+   } catch(e) {
+      statusstr += "'color:red'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be PASS</span>)";
+
+   try {
+      statusstr += "<br>getChannelConfig: <span style=";
+      var chconfig = videobroadcast.getChannelConfig();
+      statusstr += "'color:green'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:red'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be PASS</span>)";
+
+   try {
+      statusstr += "<br>prevChannel: <span style=";
+      videobroadcast.prevChannel();
+      statusstr += "'color:green'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:red'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be PASS</span>)";
+
+   try {
+      statusstr += "<br>nextChannel: <span style=";
+      videobroadcast.nextChannel();
+      statusstr += "'color:green'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:red'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be PASS</span>)";
+
+   status.innerHTML = statusstr;
+}
+
+transition_to_independent = function() {
+   var status = document.getElementById('status');
+   var videobroadcast = document.getElementById('videobroadcast');
+
+   statusstr += "<br><br><b>After Transition to Independent App</b>";
+
+   try {
+      statusstr += "<br>bindToCurrentChannel: <span style=";
+      videobroadcast.bindToCurrentChannel();
+      statusstr += "'color:red'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   statusstr += "<br>playstate is: <span style=";
+   if (0 == videobroadcast.playState) {
+      statusstr += "'color:green'>";
+   } else {
+      statusstr += "'color:red'>";
+   }
+   statusstr += videobroadcast.playState + "</span> (<span style='color:blue'>should be 0</span>)";
+
+   try {
+      statusstr += "<br>currentChannel: <span style=";
+      if (null !== videobroadcast.currentChannel)
+         statusstr += "'color:red'>PASS</span>";
+      else
+         statusstr += "'color:green'>FAIL</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   try {
+      statusstr += "<br>getChannelConfig: <span style=";
+      var chconfig = videobroadcast.getChannelConfig();
+      statusstr += "'color:red'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   try {
+      statusstr += "<br>prevChannel: <span style=";
+      videobroadcast.prevChannel();
+      statusstr += "'color:red'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   try {
+      statusstr += "<br>nextChannel: <span style=";
+      videobroadcast.nextChannel();
+      statusstr += "'color:red'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   videobroadcast.setChannel(k_channel);
+   window.setTimeout(function() {
+      transition_to_related("After Transition to Related App");
+   }, 1000);
+}
+
+var k_channel = null;
+
+related_to_independent = function() {
+   var videobroadcast = document.getElementById('videobroadcast');
+   var status = document.getElementById('status');
+
+   statusstr = "<br><b>Before Transition to Independent App</b>";
+   try {
+      statusstr += "<br>bindToCurrentChannel: <span style=";
+      videobroadcast.bindToCurrentChannel();
+      statusstr += "'color:green'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:red'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be PASS</span>)";
+
+   try {
+      statusstr += "<br>currentChannel: <span style=";
+      k_channel = videobroadcast.currentChannel;
+      if (null !== k_channel)
+         statusstr += "'color:green'>PASS</span>";
+      else
+         statusstr += "'color:red'>FAIL</span>";
+   } catch(e) {
+      statusstr += "'color:red'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be PASS</span>)";
+
+   statusstr += "<br>playstate is: <span style=";
+   if (0 != videobroadcast.playState) {
+      statusstr += "'color:green'>";
+   } else {
+      statusstr += "'color:red'>";
+   }
+   statusstr += videobroadcast.playState + "</span> (<span style='color:blue'>should not be 0</span>)";
+
+   videobroadcast.setChannel(null);
+
+   window.setTimeout(transition_to_independent, 1000);
+
+   status.innerHTML = "Result will update after 2secs";
+}
+
+launchApp1 = function() {
+   var appmanager = document.getElementById('appmanager');
+   appmanager.getOwnerApplication().createApplication('http://172.25.1.38/hbbtv/akku/appmgr/app1.html', false);
+}
+
+launchApp2 = function() {
+   var appmanager = document.getElementById('appmanager');
+   appmanager.getOwnerApplication().createApplication('dvb://current.ait/64.65', false);
+}
+
+back = function() {
+   document.location.assign("../index.html");
+}
+
+</script>
+<body onload="myload()">
+<h1>HOME</h1>
+<button id="bk" onclick="back()">Back</button><br>
+<button id="btn1" onclick="related_to_independent()">Related To Independent</button><br>
+<button id="btn2" onclick="launchApp1()">createApplication(http://172.25.1.38/hbbtv/akku/appmgr/app1.html)</button><br>
+<button id="btn2" onclick="launchApp2()">createApplication(dvb://current.ait/64.65)</button><br>
+<p id="status"></p>
+
+<object id="appmanager" type="application/oipfApplicationManager">Unable to create Application Manager</object>
+<object id="videobroadcast" type="video/broadcast" style="position:absolute; left: 900px; top: 500px; width:320px; height: 160px;">Unable to create Video/Broadcast</object>
+</body>
+</html>

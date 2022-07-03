@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/vnd.hbbtv.xml+xhtml; charset=ISO-8859-1" />
+<title>Stream Event Test</title>
+<!-- 
+	Test application for stream events. Subscribes for the events, displays status information
+	and the content of incoming event sections.	
+ -->
+<link rel="stylesheet" type="text/css" href="global.css" media="all"/>
+
+<script type="text/javascript">
+//<![CDATA[
+    var msgField = null;
+    var statField = null;
+    var vidObj = null;
+	var appMan = null;
+	var app = null;
+    
+	function startTest() {
+		msgField  = document.getElementById("output");
+		statField = document.getElementById("status");
+		vidObj    = document.getElementById("vbObject");
+		appMan    = document.getElementById("appMan");
+
+		statField.innerHTML = "Initializing test application ... ";
+		
+		try {
+			if (!appMan.getOwnerApplication) {
+				statField.innerHTML = "HbbTV application manager not supported."
+				return;
+			}
+			if (!vidObj.bindToCurrentChannel) {
+				statField.innerHTML = "HbbTV video broadcast object not supported."
+				return;
+			}
+			
+			app = appMan.getOwnerApplication(document);
+			app.show();
+			
+			vidObj.bindToCurrentChannel();
+			if (vidObj.playState == 2) {
+				registerStreamEventListener();						
+			} else {
+				vidObj.onPlayStateChange = function (state, error) {
+					if (state == 2) {
+						registerStreamEventListener();						
+					}
+				};
+				statField.innerHTML = "Wait for HbbTV video broadcast object to go to presenting state ... "
+			}
+			
+		} catch (e) {
+			statField.innerHTML = "Error in init " + e;
+		}
+
+	}
+	
+	function registerStreamEventListener () {
+		try {
+			var x = vidObj.addStreamEventListener("test.event", "event1", handleStreamEvent);
+			statField.innerHTML = "Set stream event listener: " + x;
+		} catch (e) {
+			statField.innerHTML = "Failed to listen for stream events.<br />" + e;
+		}
+	}
+
+	var count = 0;
+	function handleStreamEvent(streamEvent) {
+		var str = "";
+		try {
+			var status = streamEvent.status;
+
+			str =  "Name: "   + streamEvent.name     + "<br />";
+			str += "Data: "   + streamEvent.data     + "<br />";
+			str += "Text: "   + streamEvent.text     + "<br />";
+			str += "Status: " + streamEvent.status   + "<br />";
+			str += "Total events rcvd: " + (++count) + "<br />";
+			
+		} catch (e) {
+			statField.innerHTML = "Failed to parse stream event.<br />" + e;
+		}
+		msgField.innerHTML = str;
+	}
+//]]>
+</script>
+
+</head>
+<body onload="startTest();">
+	<div>
+		<h1>HbbTV Stream Event Test</h1>
+		<h2>Status:</h2>
+		<div id="status">Test not started yet.</div>
+		<h2>Last Event:</h2>
+		<div id="output">None</div>
+	</div>
+	<div style="z-index: 0; position: absolute; width=100%; height=100%; top: 0; left:0;" id="vidCont">
+	</div>
+	<div style="visibility: hidden; width:0; height:0;">
+		<object type="application/oipfApplicationManager" id="appMan"> </object>
+		<object type="video/broadcast" id="vbObject"> </object>
+	</div>
+</body>
+</html>

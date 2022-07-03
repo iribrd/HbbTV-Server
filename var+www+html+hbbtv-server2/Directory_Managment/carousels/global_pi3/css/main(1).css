@@ -1,0 +1,182 @@
+/*csslint fallback-colors:false */
+* {
+  padding : 0;
+  margin  : 0;
+}
+
+body {
+  margin           : 0;
+  padding          : 0;
+  background-color : transparent;
+  font-family      : Tiresias;
+  font-size        : 26px;
+  overflow         : hidden;
+  color            : white;
+}
+
+ul li {
+  list-style : none;
+}
+
+ul ul li {
+  background-color : rgba(30, 30, 30, 0.6);
+}
+
+li {
+  text-shadow : 4px 4px 9px rgba(0, 0, 0, 0.60);
+}
+
+.hidden {
+  display    : none !important;
+  visibility : hidden !important;
+}
+
+/*
+RED and COLOR buttons SECTION
+*/
+
+/*
+MAIN MENU SECTIONrr
+*/
+#menu {
+  position         : absolute;
+  left             : 0;
+  bottom           : 0;
+  width            : 320px;
+  height           : 720px;
+  display          : none;
+  background-color : rgba(0, 0, 0, 0.7);
+}
+
+#menu.sub0 {
+  left : 0px;
+}
+
+#menu.sub1 {
+  left : -230px;
+}
+
+#menu.sub2 {
+  left : -590px;
+}
+
+#menu.sub3 {
+  left : -690px;
+}
+
+#menutitle {
+  color            : white;
+  padding-top      : 50px;
+  text-align       : center;
+  background-color : rgba(0, 0, 0, 0.9);
+}
+
+#applicationlist {
+  bottom   : 70px;
+  position : absolute;
+  width    : 1420px;
+  left     : -56px;
+}
+
+div > ul > li {
+  padding-left : 62px;
+}
+
+ul li {
+  height           : 55px;
+  line-height      : 55px;
+  padding-left     : 12px;
+  border-bottom    : 1px solid #555;
+  background-color : rgba(0, 0, 0, 0.8);
+  border-top       : 1px solid #333;
+}
+
+div > ul > li::before {
+
+  content          : " ";
+  width            : 100%;
+  height           : 100%;
+  position         : absolute;
+  z-index          : -1;
+  top              : 0;
+  left             : 0;
+  background-color : rgba(0, 0, 0, 0.7);
+}
+
+div > ul > ul {
+  position    : absolute;
+  width       : 300px;
+  top         : 86px;
+  left        : 320px;
+  border-left : solid #e66 1px;
+}
+
+div > ul > ul > ul {
+  position    : absolute;
+  width       : 300px;
+  top         : 0px;
+  left        : 300px;
+  border-left : solid #e66 1px;
+}
+
+div > ul > ul > ul > ul {
+  position    : absolute;
+  width       : 300px;
+  top         : 0px;
+  left        : 300px;
+  border-left : solid #e66 1px;
+}
+
+li.focused {
+  background-color : #143970 !important;
+  color            : white;
+}
+
+.menu-item {
+  width            : 180px;
+  height           : 180px;
+  background-color : #2d2d42;
+  display          : inline-block;
+  box-sizing       : border-box;
+  margin-right     : 20px;
+}
+
+.menu-item.selected {
+  background-color : #462222;
+  border-bottom    : 2px solid #c01010;
+}
+
+.menu-item.focused {
+  background-color : #c01010;
+}
+
+.menu-item.focused .full {
+  background-size : 94%;
+}
+
+.menu-icon {
+  background-position : center;
+  background-repeat   : no-repeat;
+  width               : 100%;
+  height              : 140px;
+}
+
+.menu-icon.full {
+  height : 180px;
+}
+
+.menu-text {
+  width      : 180px;
+  height     : 30px;
+  text-align : center;
+  color      : white;
+  position   : absolute;
+  font-size  : 20px;
+  bottom     : 20px;
+}
+
+li.submenu img {
+  float    : right;
+  top      : 4px;
+  position : relative;
+}

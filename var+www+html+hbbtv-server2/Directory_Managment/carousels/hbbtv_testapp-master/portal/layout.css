@@ -1,0 +1,163 @@
+body {
+   background-image: url('res/bg03.jpg');
+   background-repeat: no-repeat; 
+   background-size: 100% 100%; 
+   overflow-x: hidden;
+   overflow-y: hidden;
+   width: 100%;
+   height: 100%;
+   font: 20px sans-serif;
+}
+#area::-webkit-scrollbar {
+	width: 12px;
+	background-color: rgba(238,51,30,0.3);
+}
+#area::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: rgb(255,255,255);
+}
+#area {
+   position:absolute;
+   left: 90px;
+   top: 170px;
+   width: 1095px;
+   height: 470px;
+   overflow-x: hidden;
+   overflow-y: scroll;
+   list-style: none;
+   background-size: 20%;
+   background-position: 90%;
+   background-repeat: no-repeat;
+}
+#appsize {
+   position:absolute;
+   left: 90px;
+   top: 670px;
+   width: 1095px;
+   //height: 535px;
+   font: 20px sans-serif;
+   color: white;
+   text-align: center;
+}
+#title {
+   background-color: white;
+   color: rgb(5,5,5);
+   font-size: 30px;
+   position:absolute;
+   left: 0px;
+   top: 40px;
+   width: 1200px;
+   height: 50px;
+   padding-left: 80px;
+   padding-top: 15px;
+   opacity: 0.75;
+   overflow-x: hidden;
+   user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+   box-shadow: 0px 10px 20px #000000;
+}
+.button1_focus {
+   background-color: rgb(238,51,30);
+   color: white;
+   opacity: 1.0; -webkit-transition: all 0.2s ease-out; transition: all 0.2s ease-out;
+   box-shadow: 0px 0px 20px #cccccc;
+}
+.heading{
+   background-color: rgb(255,255,255); -webkit-border-radius: 5px; color: black; text-align: center; opacity: 0.9;
+}
+#leftarrow {
+   position:absolute;
+   left:30px;
+   top:310px;
+   width: 46px;
+   opacity:0.3;
+}
+#rightarrow {
+   position:absolute;
+   left:1194px;
+   top:310px;
+   width: 46px;
+   opacity:0.3;
+}
+.button {
+   position: relative; width: 192px; height: 108px; opacity: 1.0; color: white;
+   padding: 5px;
+   background-size: 100% 100%;
+   -webkit-border-radius: 10px;
+   box-shadow: 0px 0px 23px #222222;
+}
+.button-caption {
+   position: relative; width: 192px; height: 38px; opacity: 1.0; color: black;
+   font: 18px sans-serif;
+   padding-top: 5px;
+}
+.button-nonfocus {
+   position: absolute; width: 202px; height: 158px; opacity: 1.0; color: white;
+   -webkit-border-radius: 5px; text-align: center; padding: 5px;
+   border: 4px solid rgba(255,255,255,0.0);
+   opacity:1.0;
+}
+.button-focus {
+   position: absolute; width: 202px; height: 158px; opacity: 1.0; color: white;
+   background-color: white;
+   -webkit-border-radius: 10px; text-align: center; padding: 5px;
+   border: 4px solid rgba(255,255,255,0.2);
+   opacity:1.0;
+}
+#category-group-bg {
+   position:absolute;
+   left: 0px;
+   top: 140px;
+   width: 1280px;
+   height: 40px;
+   overflow-x: hidden;
+   overflow-y: hidden;
+   list-style: none;
+   box-shadow: 0px 0px 10px #222222;
+   //border: 4px solid white;
+}
+#category-group {
+   position:absolute;
+   left: 90px;
+   top: 120px;
+   width: 1095px;
+   height: 50px;
+   overflow-x: hidden;
+   overflow-y: hidden;
+   list-style: none;
+   //box-shadow: 0px 0px 10px #222222;
+   //border: 4px solid white;
+}
+.category-nonfocus {
+   position: absolute; width: 196px; height: 25px; opacity: 0.3; color: white;
+   padding: 5px;
+   text-align: center;
+   border: 2px solid #C44F01;
+   //background-size: 100% 100%;
+   //-webkit-border-radius: 10px;
+   //box-shadow: 0px 0px 23px #222222;
+}
+.category-focus {
+   position: absolute; width: 196px; height: 25px; opacity: 1.0; color: black;
+   padding: 5px;
+   text-align: center;
+   background-color: white;
+   border: 2px solid white;
+   //background-size: 100% 100%;
+   //-webkit-border-radius: 10px;
+   //box-shadow: 0px 0px 23px #222222;
+}
+.category-select {
+   position: absolute; width: 196px; height: 25px; opacity: 1.0; color: white;
+   padding: 5px;
+   text-align: center;
+   background-color: #C34B00;
+   border: 2px solid #C34B00;
+   //background-size: 100% 100%;
+   //-webkit-border-radius: 10px;
+   //box-shadow: 0px 0px 23px #222222;
+}
+

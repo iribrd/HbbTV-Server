@@ -1,0 +1,104 @@
+<link rel="stylesheet" type="text/css" href="res/css/base.css"/>
+<script type="text/javascript" src="res/js/keycodes.js"></script>
+<script type="text/javascript">
+   var mediaSynchroniserActionList = [
+                       {name: 'lastError'},
+                       {name: 'lastErrorSource'},
+                       {name: 'nrOfSlaves'},
+                       {name: 'interDeviceSyncEnabled'},
+                       {name: 'interDeviceSyncDispersion'},
+                       {name: 'minSyncBufferSize'},
+                       {name: 'maxBroadbandStreamsWithBroadcast'},
+                       {name: 'maxBroadbandStreamsNoBroadcast'},
+                       {name: 'currentTime'},
+                       {name: 'initMediaSynchroniser'},
+                       {name: 'initSlaveMediaSynchroniser'},
+                       {name: 'addMediaObject'},
+                       {name: 'removeMediaObject'},
+                       {name: 'updateCorrelationTimestamp'},
+                       {name: 'enableInterDeviceSync'},
+                       {name: 'disableInterDeviceSync'},
+                    ];
+   preloadpage = function() {
+      var testcases = document.getElementById('testcases');
+      var result = document.getElementById('result');
+      for (var it=0, x=0, y=70; it < mediaSynchroniserActionList.length; ++it) {
+         var elem = document.createElement('div');
+         elem.setAttribute('id','case'+it);
+         elem.setAttribute('class','testname');
+         elem.setAttribute('style', 'left:'+x+'px; top:'+y+'px;');
+         elem.innerHTML = mediaSynchroniserActionList[it].name;
+         testcases.appendChild(elem);
+
+         elem = document.createElement('img');
+         elem.setAttribute('id','result'+it);
+         elem.setAttribute('class','teststatus_undefined');
+         elem.setAttribute('style', 'left:'+(x+330)+'px; top:'+y+'px;');
+         result.appendChild(elem);
+         y+=30;
+         if ((it+1)%19 == 0) {
+            y=70;
+            x+=380;
+         }
+      }
+      cleartest();
+   }
+   function myload() {
+      preloadpage();
+      execute();
+   }
+   var currenttestcase = 0;
+   function execute() {
+      var mediasynchroniser = document.getElementById('mediasynchroniser');
+      var testcase = 'mediasynchroniser.';
+      var result = document.getElementById('result'+currenttestcase);
+      try {
+         testcase += mediaSynchroniserActionList[currenttestcase].name;
+         testcase = eval(testcase);
+         if (typeof testcase === 'undefined' || typeof testcase === undefined) {
+            result.setAttribute('src','res/img/wrong.gif');
+         } else {
+            result.setAttribute('src','res/img/right.gif');
+         }
+      } catch(e) {
+         if (result)
+            result.setAttribute('src','res/img/wrong.gif');
+      }
+      ++currenttestcase;
+      if (currenttestcase < mediaSynchroniserActionList.length) {
+         window.setTimeout(execute,300);
+      }
+   }
+   cleartest = function() {
+      for (var it=0; it < mediaSynchroniserActionList.length; ++it) {
+         var result = document.getElementById('result'+it);
+         result.setAttribute('src','res/img/hourglass.png');
+      }
+      currenttestcase = 0;
+   }
+   alphatest = function() {
+      cleartest();
+      execute();
+   }
+   starttest = function() {
+      alert('Coming Soon');
+   }
+   document.addEventListener('keyup', function(e) {
+      if (e.keyCode == VK_ENTER) {
+         alphatest();
+      } else if (e.keyCode == VK_BACK || e.keyCode == 8) {
+         window.location.assign("index.html");
+      }
+   }, true);
+</script>
+</head>
+<body onload="myload()">
+<object id="mediasynchroniser" type="application/hbbtvmediasynchroniser" style="position: absolute; left: 834px; top: 500px; width: 256px; height: 144px;"></object>
+<div id='area'>
+<div id='title'>HbbTV Application Smart and Haiku Test # Plugin Property Check</div>
+<div id='stamp'><a target='_blank' href='https://www.linkedin.com/in/shunmugasundaramp/'>Shunmuga Sundaram P</a></div>
+<div id="testcases"></div>
+<div id="result"></div>
+</div>
+</body>
+</html>

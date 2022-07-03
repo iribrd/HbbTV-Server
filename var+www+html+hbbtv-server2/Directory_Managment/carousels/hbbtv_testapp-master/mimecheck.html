@@ -1,0 +1,299 @@
+<html>
+<link rel="stylesheet" type="text/css" href="res/css/base.css" />
+<style type="text/css">
+.plugin {
+   width: 40px;
+   height: 30px;
+   color: red;
+   display: none;
+}
+.nottested {
+   color: black;
+}
+.passed {
+   color: green;
+}
+.failed {
+   color: red;
+}
+.type {
+   position: absolute;
+   color: white;
+   width: 490px;
+   height: 20px;
+   padding: 5px;
+   //background-color: rgb(200,200,200);
+   border: 1px solid black;
+}
+.head {
+   position: absolute;
+   color: white;
+   text-align: center;
+   width: 90px;
+   background-color: rgb(57,6,74);
+   height: 20px;
+   padding: 5px;
+   border: 1px solid black;
+}
+.issupported {
+   position: absolute;
+   width: 20px;
+   height: 20px;
+}
+</style>
+<script type="text/javascript">
+
+var mimes = [
+               {
+                  name: 'oipfObjectFactory',
+                  type: 'application/oipfObjectFactory',
+                  create: ''
+               },
+               {
+                  name: 'hbbtvCSManager',
+                  type: 'application/hbbtvCSManager',
+                  create: 'createCSManager()'
+               },
+               {
+                  name: 'videoBroadcast',
+                  type: 'video/broadcast',
+                  create: 'createVideoBroadcastObject()'
+               },
+               {
+                  name: 'oipfCapabilities',
+                  type: 'application/oipfCapabilities',
+                  create: 'createCapabilitiesObject()'
+               },
+               {
+                  name: 'oipfConfiguration',
+                  type: 'application/oipfConfiguration',
+                  create: 'createConfigurationObject()'
+               },
+               {
+                  name: 'channelConfig',
+                  type: '',
+                  create: 'createChannelConfig()'
+               },
+               {
+                  name: 'video_MP4',
+                  type: 'video/mp4',
+                  create: 'createVideoMpegObject()'
+               },
+               {
+                  name: 'audio_MP4',
+                  type: 'audio/mp4',
+                  create: 'createVideoMpegObject()'
+               },
+               {
+                  name: 'video_MPEG4',
+                  type: 'video/mpeg4',
+                  create: 'createVideoMpegObject()'
+               },
+               {
+                  name: 'audio_MPEG4',
+                  type: 'audio/mpeg4',
+                  create: 'createVideoMpegObject()'
+               },
+               {
+                  name: 'video_MPEG',
+                  type: 'video/mpeg',
+                  create: 'createVideoMpegObject()'
+               },
+               {
+                  name: 'audio_MPEG',
+                  type: 'audio/mpeg',
+                  create: 'createVideoMpegObject()'
+               },
+               {
+                  name: 'application_dash',
+                  type: 'application/dash+xml',
+                  create: 'createVideoMpegObject()'
+               },
+               {
+                  name: 'oipfApplicationManager',
+                  type: 'application/oipfApplicationManager',
+                  create: 'createApplicationManagerObject()'
+               },
+               {
+                  name: 'oipfSearchManager',
+                  type: 'application/oipfSearchManager',
+                  create: 'createSearchManagerObject()'
+               },
+               {
+                  name: 'hbbtvMediaSynchroniser',
+                  type: 'application/hbbtvMediaSynchroniser',
+                  create: 'createMediaSynchroniser()'
+               },
+               {
+                  name: 'notifsocket',
+                  type: 'application/notifsocket',
+                  create: 'createNotifSocketObject()'
+               },
+               {
+                  name: 'oipfCodManager',
+                  type: 'application/oipfCodManager',
+                  create: 'createCodManagerObject()'
+               },
+               {
+                  name: 'oipfCommunicationServices',
+                  type: 'application/oipfCommunicationServices',
+                  create: ''
+               },
+               {
+                  name: 'oipfDownloadManager',
+                  type: 'application/oipfDownloadManager',
+                  create: 'createDownloadManagerObject()'
+               },
+               {
+                  name: 'oipfDownloadTrigger',
+                  type: 'application/oipfDownloadTrigger',
+                  create: 'createDownloadTriggerObject()'
+               },
+               {
+                  name: 'oipfDrmAgent',
+                  type: 'application/oipfDrmAgent',
+                  create: 'createDrmAgentObject()'
+               },
+               {
+                  name: 'oipfGatewayInfo',
+                  type: 'application/oipfGatewayInfo',
+                  create: 'createGatewayInfoObject()'
+               },
+               {
+                  name: 'oipfMDTF',
+                  type: 'application/oipfMDTF',
+                  create: 'createMDTFObject()'
+               },
+               {
+                  name: 'oipfParentalControlManager',
+                  type: 'application/oipfParentalControlManager',
+                  create: 'createParentalControlManagerObject()'
+               },
+               {
+                  name: 'oipfRecordingScheduler',
+                  type: 'application/oipfRecordingScheduler',
+                  create: 'createRecordingSchedulerObject()'
+               },
+               {
+                  name: 'oipfRemoteControlFunction',
+                  type: 'application/oipfRemoteControlFunction',
+                  create: 'createRemoteControlFunctionObject()'
+               },
+               {
+                  name: 'oipfRemoteManagement',
+                  type: 'application/oipfRemoteManagement',
+                  create: 'createRemoteManagementObject()'
+               },
+               {
+                  name: 'oipfStatusView',
+                  type: 'application/oipfStatusView',
+                  create: 'createStatusViewObject()'
+               },
+            ];
+
+myload = function() {
+   var elem;
+   var x = 50, y = 60;
+   for (var it = 0; it < mimes.length; ++it) {
+      if (y == 60) {
+         elem = document.createElement('p');
+         elem.setAttribute('class', 'head');
+         elem.setAttribute('style', 'left: '+x+'px; top: '+y+'px; width: 300px;');
+         elem.innerHTML = 'MimeType';
+         document.getElementById('content').appendChild(elem);
+
+         elem = document.createElement('p');
+         elem.setAttribute('class', 'head');
+         elem.setAttribute('style', 'left: '+(x+300)+'px; top: '+y+'px;');
+         elem.innerHTML = 'isSupported()';
+         document.getElementById('content').appendChild(elem);
+
+         elem = document.createElement('p');
+         elem.setAttribute('class', 'head');
+         elem.setAttribute('style', 'left: '+(x+400)+'px; top: '+y+'px;');
+         elem.innerHTML = 'create()';
+         document.getElementById('content').appendChild(elem);
+
+         y+=30;
+      }
+
+      elem = document.createElement('p');
+      elem.setAttribute('id', 't'+it);
+      elem.setAttribute('class', 'type');
+      elem.setAttribute('style', 'left: '+x+'px; top: '+y+'px;');
+      if (mimes[it].type != '') {
+        elem.innerHTML = mimes[it].type;
+      } else {
+        elem.innerHTML = mimes[it].name;
+      }
+      document.getElementById('content').appendChild(elem);
+
+      elem = document.createElement('img');
+      elem.setAttribute('class','issupported');
+      elem.setAttribute('id', 'i'+it);
+      elem.setAttribute('style', 'left: '+(x+340)+'px; top: '+(y+20)+'px;');
+      if (mimes[it].type != '') {
+         try {
+            if (window.oipfObjectFactory.isObjectSupported(mimes[it].type)) {
+               elem.setAttribute('src','res/img/right.gif');
+            } else {
+               elem.setAttribute('src','res/img/wrong.gif');
+            }
+         } catch(e) {
+            elem.setAttribute('src','res/img/wrong.gif');
+         }
+      } else {
+         elem.setAttribute('src','res/img/hourglass.png');
+      }
+      document.getElementById('content').appendChild(elem);
+
+      elem = document.createElement('img');
+      elem.setAttribute('class','issupported');
+      elem.setAttribute('id', 'c'+it);
+      elem.setAttribute('style', 'left: '+(x+440)+'px; top: '+(y+20)+'px;');
+      if (mimes[it].create != '') {
+         try {
+            if (eval('window.oipfObjectFactory.'+mimes[it].create)) {
+               elem.setAttribute('src','res/img/right.gif');
+            } else {
+               elem.setAttribute('src','res/img/wrong.gif');
+            }
+         } catch(e) {
+            elem.setAttribute('src','res/img/wrong.gif');
+         }
+      } else {
+         elem.setAttribute('src','res/img/hourglass.png');
+      }
+      document.getElementById('content').appendChild(elem);
+
+      if (y >= 520) {
+         x += 540;
+         y = 60;
+      } else {
+         y += 30;
+      }
+   }
+   document.addEventListener('keydown', keyreceiver, false);
+}
+
+keyreceiver = function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.keyCode == 27) {
+        document.location.reload();
+        return;
+    } else if (event.keyCode == 8) {
+        window.location.assign("index.html");
+    } else {
+        return;
+    }
+};
+</script>
+<body onload="myload()">
+<div id='area'>
+   <div id='title'>HbbTV Application Smart and Haiku Test # Mime Check</div>
+   <div id='stamp'><a target='_blank' href='https://www.linkedin.com/in/shunmugasundaramp/'>Shunmuga Sundaram P</a></div>
+   <div id="content"></div>
+</div>
+</body>
+</html>

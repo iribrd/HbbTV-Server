@@ -1,0 +1,4 @@
+[24-Mar-2014 17:06:47 Asia/Tehran] PHP Warning:  file_get_contents(): Unable to access shahrha.txt in /home/gambarta/domains/gambartar.ir/public_html/weather/img/index.php on line 54
+[24-Mar-2014 17:06:47 Asia/Tehran] PHP Warning:  file_get_contents(shahrha.txt): failed to open stream: No such file or directory in /home/gambarta/domains/gambartar.ir/public_html/weather/img/index.php on line 54
+[24-Mar-2014 17:06:47 Asia/Tehran] PHP Notice:  Undefined offset: 1 in /home/gambarta/domains/gambartar.ir/public_html/weather/img/index.php on line 59
+[24-Mar-2014 17:06:47 Asia/Tehran] PHP Notice:  Undefined offset: 2 in /home/gambarta/domains/gambartar.ir/public_html/weather/img/index.php on line 60

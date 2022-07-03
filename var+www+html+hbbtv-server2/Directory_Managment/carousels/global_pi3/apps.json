@@ -1,0 +1,56 @@
+{
+  "title": "اداره کل تحقیقات و جهاد خودکفایی",
+  "image": "maulogo.png",
+  "applications": [
+    {
+      "name": "تبلیغات",
+      "icon": "nova.png",
+      "default": true,
+      "applications": [
+                {
+                  "name": "Hyundai",
+                  "url": "../hbbtv_ads_templates/hyundai_tucson/index.html"
+                },
+				{
+                  "name": "اداره کل جهاد خودکفایی",
+                  "url": "../demo/demo.html"
+                },
+				{
+                  "name": "MPAT",
+                  "url": "http://172.16.3.131/mpat/web/index.php"
+                }
+	]
+    },
+    {
+      "name": "بازی ها",
+      "icon": "tests.png",
+      "default": false,
+      "applications": [
+        
+            {
+              "name": "مین روب",
+              "url": "games_pi/minesweeper/index.html"
+            }
+      ]
+    },
+    {
+      "name": "اطلاعات عمومی",
+      "icon": "tests.png",
+      "default": false,
+      "applications": [
+        {
+              "name": "اوقات شرعی",
+	      "url": "azan/owghat.htm"
+        },
+		{
+              "name": "آب و هوا",
+	      "url": "weather/index.php"
+        },
+		{
+              "name": "نرخ ارز",
+	      "url": "price.html"
+        }
+      ]
+    }
+  ]
+}

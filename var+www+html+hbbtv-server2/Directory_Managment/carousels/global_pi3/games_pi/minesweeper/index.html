@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs">
+    <head>
+        <title>Minesweeper</title>
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="-1" />
+        <meta http-equiv="Content-Type" content="application/ce-html+xml; charset=utf-8" />
+        <!-- build:[href] css/main.min.css -->
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <!-- /build -->
+        <meta name="author" content="Mautilus s.r.o. U Vodarny 2, Brno, Czech Republic, www.mautilus.com" />
+        <script type="text/javascript" src="config.js"></script>
+        <!-- build:[src] js/jquery.js -->
+        <script type="text/javascript" src="js/app/xlibs/jquery.js"></script>
+        <!-- /build -->
+        <!-- build:[src] js/json2.js -->
+        <script type="text/javascript" src="js/app/xlibs/json2.js"></script>
+        <!-- /build -->
+        <!-- build:[src] js/source.min.js -->
+        <script type="text/javascript" src="js/app/localization/cz.js"></script>
+        <!-- /build -->
+        <!-- build:remove -->
+        <script type="text/javascript" src="js/app/localization/cz_gold.js"></script>
+        <script type="text/javascript" src="js/app/lib/hbbtv.js"></script>
+        <script type="text/javascript" src="js/app/lib/events.js"></script>
+        <script type="text/javascript" src="js/app/lib/scene.js"></script>
+        <script type="text/javascript" src="js/app/lib/storage.js"></script>
+        <script type="text/javascript" src="js/app/lib/player.js"></script>
+        <script type="text/javascript" src="js/app/lib/util.js"></script>
+        <script type="text/javascript" src="js/app/lib/model.js"></script>
+        <script type="text/javascript" src="js/app/lib/snippet.js"></script>
+        <script type="text/javascript" src="js/app/scene/game.js"></script>
+        <script type="text/javascript" src="js/app/scene/welcome.js"></script>
+        <script type="text/javascript" src="js/app/scene/settings.js"></script>
+        <script type="text/javascript" src="js/app/scene/highscore.js"></script>
+        <script type="text/javascript" src="js/app/scene/about.js"></script>
+        <script type="text/javascript" src="js/app/app.js"></script>
+        <script type="text/javascript" src="js/app/Main.js"></script>
+        <!-- /build -->
+	    <script src="../shared/js/appShared.js"></script>
+    </head>
+    <body id="body" onload="Main.onLoad();" onunload="Main.unload();">
+        <div style="visibility: hidden; width: 0; height: 0; position: absolute;">
+            <object type="application/oipfApplicationManager" id="oipfAppMan">
+            </object>
+            <object type="application/oipfConfiguration" id="oipfConfig">
+            </object>
+        </div>
+        <div id="viewport">
+            <div class="content">
+                <div class="info"></div>
+                <div class="scene" id="scene-game">
+                    <div class="dialog" style="display: none">
+                        <span class="text">Press "OK" for restarting game</span>
+                    </div>
+                    <div class="scene-content">
+                        <div class="grid"></div>
+                    </div>
+
+                    <div class="time menu">
+                        <span class="value"><span class="big"></span>:<span style="font-size: 25px" class="small"></span></span>
+                        <span class="icon"></span>
+                    </div>
+                    <div class="mines-remain menu">
+                        <span class="icon"></span>
+                        <span class="value"></span>
+                    </div>
+
+                    <div class="scene" id="scene-welcome">
+                        <div class="logo"></div>
+                        <div class="menu">
+                            <div>Menu</div>
+                            <ul class="items">
+                                <li class="focusable new">NEW GAME</li>
+                                <li class="focusable settings">SETTINGS</li>
+                                <li class="focusable highscore">HIGHSCORE</li>
+                                <li class="focusable about">ABOUT</li>
+                                <li class="focusable quit">QUIT</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="scene" id="scene-highscore">
+                        <div class="logo"></div>
+                        <div class="menu">
+                            <div>HIGHSCORE</div>
+                            <ul class="items">
+                                <li class="easy"><span class="difficulty">EASY:</span><span class="value"></span></li>
+                                <li class="medium"><span class="difficulty">MEDIUM:</span><span class="value"></span></li>
+                                <li class="hard"><span class="difficulty">HARD:</span><span class="value"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="scene" id="scene-about">
+                        <div class="logo"></div>
+                        <div class="subtitle">ABOUT</div>
+                        <div class="text" style="text-align: center">
+                            The goal of the game is to tag all squares where the mine is. When you fire the square you can loose - if the mine was there or the number of surrounding mines will be shown.<br> <br>
+                            Have fun! <br>
+                            Mautilus., s. r. o.
+                        </div>
+                        <div class="subscription"></div>
+                    <div class="scene" id="scene-settings">
+                        <div class="logo"></div>
+                        <div class="menu">
+                            <div>SETTINGS</div>
+                            <ul class="items">
+                                <li class="focusable easy">Easy</li>
+                                <li class="focusable intermediate">Intermediate</li>
+                                <li class="focusable hard">Hard</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                <div id="colorButtons" class="title">
+                    <span class="btn red"></span><span id="redtxt">Ukončiť</span>
+                    <span class="btn yellow"></span><span id="bluetxt">Aplikácie</span>
+                </div>
+        </div>
+
+        </div>
+    </body>
+</html>

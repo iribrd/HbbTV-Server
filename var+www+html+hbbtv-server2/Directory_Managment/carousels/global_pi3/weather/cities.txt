@@ -1,0 +1,1 @@
+tehran:http://rss.wunderground.com/auto/rss_full/global/stations/40754.xml

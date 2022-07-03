@@ -1,0 +1,96 @@
+
+<html>
+<style type="text/css">
+body {
+   background-color: white;
+}
+</style>
+<script type="text/javascript">
+myload = function() {
+   var status = document.getElementById('status');
+   document.getElementById('btn1').focus();
+   status.innerHTML = "Result will update after 2secs";
+   window.setTimeout(independent_test, 2000);
+}
+
+var statusstr = "";
+
+independent_test = function() {
+   var status = document.getElementById('status');
+   var videobroadcast = document.getElementById('videobroadcast');
+
+   statusstr = "<br><br><b>Accessing VideoBroadcast from Independent App</b>";
+
+   try {
+      statusstr += "<br>bindToCurrentChannel: <span style=";
+      videobroadcast.bindToCurrentChannel();
+      statusstr += "'color:red'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   statusstr += "<br>playstate is: <span style=";
+   if (0 == videobroadcast.playState) {
+      statusstr += "'color:green'>";
+   } else {
+      statusstr += "'color:red'>";
+   }
+   statusstr += videobroadcast.playState + "</span> (<span style='color:blue'>should be 0</span>)";
+
+   try {
+      statusstr += "<br>getChannelConfig: <span style=";
+      var chconfig = videobroadcast.getChannelConfig();
+      statusstr += "'color:red'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   try {
+      statusstr += "<br>currentChannel: <span style=";
+      if (null !== videobroadcast.currentChannel)
+         statusstr += "'color:red'>PASS</span>";
+      else
+         statusstr += "'color:green'>FAIL</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   try {
+      statusstr += "<br>prevChannel: <span style=";
+      videobroadcast.prevChannel();
+      statusstr += "'color:red'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   try {
+      statusstr += "<br>nextChannel: <span style=";
+      videobroadcast.nextChannel();
+      statusstr += "'color:red'>PASS</span>";
+   } catch(e) {
+      statusstr += "'color:green'>FAIL</span>";
+   }
+   statusstr +=  "(<span style='color:blue'>should be FAIL</span>)";
+
+   status.innerHTML = statusstr;
+}
+
+launchHomeApp = function() {
+   var appmanager = document.getElementById('appmanager');
+   appmanager.getOwnerApplication().createApplication('dvb://current.ait/64.64', false);
+}
+
+</script>
+<body onload="myload()">
+<h1>APP1 (HTTP://{URL}) - Broadcast Independent Application</h1>
+<button id="btn1" onclick="launchHomeApp()">HOME</button><br>
+<p id="status"></p>
+
+<object id="appmanager" type="application/oipfApplicationManager">Unable to create Application Manager</object>
+<object id="videobroadcast" type="video/broadcast" style="position:absolute; left: 900px; top: 500px; width:320px; height: 160px;">Unable to create Video/Broadcast</object>
+</body>
+</html>

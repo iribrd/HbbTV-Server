@@ -1,0 +1,83 @@
+{
+  "title": "اداره کل تحقیقات و جهاد خودکفایی",
+  "image": "maulogo.png",
+  "applications": [
+    {
+      "name": "تبلیغات",
+      "icon": "nova.png",
+      "default": true,
+      "applications": [
+                {
+                  "name": "Fashion version 1",
+                  "url": "http://hbbtv01.mautilus.com/hbbtv_ads_templates/Template2OU/"
+                },
+                {
+                  "name": "Fashion version 2",
+                  "url": "http://hbbtv01.mautilus.com/hbbtv_ads_templates/Template2SBS/"
+                },
+                {
+                  "name": "Mobile tariff",
+                  "url": "http://hbbtv01.mautilus.com/hbbtv_ads_templates/Template3/"
+                },
+                {
+                  "name": "Cashloan",
+                  "url": "http://hbbtv01.mautilus.com/hbbtv_ads_templates/Template4/"
+                },
+                {
+                  "name": "Phone number",
+                  "url": "http://hbbtv01.mautilus.com/hbbtv_ads_templates/Template5/"
+                },
+                {
+                  "name": "YFSF",
+                  "url": "http://hbbtv01.mautilus.com/hbbtv_ads_templates/Template6/"
+                },
+                {
+                  "name": "Hyundai",
+                  "url": "http://hbbtv01.mautilus.com/whitelabel/ad_templates/hyundai_tucson/"
+                }
+
+	]
+    },
+    {
+      "name": "بازی ها",
+      "icon": "tests.png",
+      "default": false,
+      "applications": [
+        {
+              "name": "2048",
+	      "url": "http://hbbtv01.mautilus.com/games_pi/2048/index.html"
+        },
+            {
+              "name": "مین روب",
+              "url": "http://hbbtv01.mautilus.com/games_pi/minesweeper/index.html"
+            },
+            {
+              "name": "Numerozo",
+              "url": "http://hbbtv01.mautilus.com/games_pi/numerozo/index.html"
+            },
+            {
+              "name": "Save The Fish",
+              "url": "http://hbbtv01.mautilus.com/games_pi/hangman/index.html"
+            },
+            {
+              "name": "Brickama",
+              "url": "http://hbbtv01.mautilus.com/games_pi/brickama/index.html"
+            },
+            {
+              "name": "Snake",
+              "url": "http://hbbtv01.mautilus.com/games_pi/snake/index.html"
+            },
+            {
+              "name": "Flying Fish",
+              "url": "http://hbbtv01.mautilus.com/games_pi/flying_fish/index.html"
+            },
+            {
+              "name": "Lunar Lander",
+              "url": "http://hbbtv01.mautilus.com/games_pi/lander/index.html"
+            }
+
+
+      ]
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+<link rel="stylesheet" type="text/css" href="res/css/base.css"/>
+<script type="text/javascript" src="res/js/keycodes.js"></script>
+<style type="text/css">
+.avcontrol {
+  position: absolute; left: 560px; top: 135px; width: 576px; height: 324px;
+  box-shadow: 0px 0px 10px black;
+}
+#infocaption_group {
+  position:absolute;
+  left: 600px; 
+  top:450px;
+  font-size: 20px;
+}
+.infocaption {
+  width: 180px;
+  text-align:right;
+  color: white;
+}
+#infovalue_group {
+  position:absolute;
+  left: 810px; 
+  top:450px;
+  font-size: 20px;
+}
+.infovalue {
+  width: 320px;
+  color: white;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+</style>
+
+<script type="text/javascript">
+   var avcontrol;
+   var opts = false;
+   var selected = 0;
+   var actions = [
+                    {name: 'setSource(BigBunny.mp4)', action: ''},
+                    {name: 'play()', action: ''},
+                    {name: 'pause()', action: ''},
+                    {name: 'seek(+10s)', action: ''},
+                    {name: 'seek(-10s)', action: ''},
+                    {name: 'play(2x)', action: ''},
+                    {name: 'play(-2x)', action: ''},
+                 ];
+   function myload() {
+      try {
+         avcontrol = document.getElementById('avcontrol');
+      } catch(e) {
+         document.getElementById('avcontrol').innerHTML = 'Exception(1)';
+         return;
+      }
+      try {
+         var it =0;
+         var elem;
+         for (; it < actions.length; ++it) {
+            elem = document.createElement("li");
+            elem.setAttribute('name',actions[it].name);
+            elem.setAttribute('id','b'+it);
+            elem.innerHTML = actions[it].name;
+            document.getElementById('menu').appendChild(elem);
+         }
+
+         window.setInterval(function() {
+           document.getElementById('play_position').innerHTML = avcontrol.playPosition/1000;
+           document.getElementById('play_duration').innerHTML = avcontrol.playTime/1000;
+           document.getElementById('play_state').innerHTML = avcontrol.playState;
+         },1000);
+      } catch(e) {
+         document.getElementById('avcontrol').innerHTML = 'Exception(2)';
+         return;
+      }
+      menuInit();
+      //setvidsize(700,150,448,252);
+   }
+   function handleKeyCode(kc) {
+      if (kc==VK_UP) {
+        menuSelect(selected-1);
+        return true;
+      } else if (kc==VK_DOWN) {
+        menuSelect(selected+1);
+        return true;
+      } else if (kc==VK_LEFT){
+        menuSelect(selected-6);
+        return true;
+      } else if (kc==VK_RIGHT){
+        menuSelect(selected+6);
+        return true;
+      } else if (kc==VK_ENTER) {
+        var liid = opts[selected].getAttribute('name');
+        if (liid=='play()') {
+          play(1);
+        } else if (liid=='setSource(BigBunny.mp4)') {
+          setSource('https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4');
+        } else if (liid=='pause()') {
+          play(0);
+        } else if (liid=='seek(+10s)') {
+          seek(10);
+        } else if (liid=='seek(-10s)') {
+          seek(-10);
+        } else if (liid=='play(2x)') {
+          play(2);
+        } else if (liid=='play(-2x)') {
+          play(-2);
+        }
+        return true;
+      } else if (kc == VK_BACK || kc == 8) {
+        try {
+        avcontrol.stop();
+        } catch(e) {}
+        window.location.assign("index.html");
+      }
+      return false;
+   }
+   setSource = function(url) {
+      avcontrol.data = url;
+      play(1);
+   }
+   play = function(speed) {
+      avcontrol.play(speed);
+   }
+   seek = function(position) {
+      avcontrol.seek(avcontrol.playPosition+(position*1000));
+   }
+   document.addEventListener("keydown", function(e) {
+         if (handleKeyCode(e.keyCode)) {
+            e.preventDefault();
+            e.stopPropagation();
+         }
+      }, true);
+   function menuInit() {
+     opts = document.getElementById('menu').getElementsByTagName('li');
+     menuSelect(0);
+   }
+   function menuSelect(i) {
+     if (i<=0) {
+       i = 0;
+     } else if (i>=opts.length) {
+       i = opts.length-1;
+     }
+     selected = i;
+     var scroll = Math.max(0, Math.min(opts.length-13, selected-6));
+     for (i=0; i<opts.length; i++) {
+       opts[i].style.display = (i>=scroll && i<scroll+13) ? 'block' : 'none';
+       opts[i].className = selected==i ? 'lisel' : '';
+     }
+   }
+   function setvidsize(x, y, w, h) {
+     avcontrol.style.left = x+'px'; 
+     avcontrol.style.top = y+'px'; 
+     avcontrol.style.width = w+'px'; 
+     avcontrol.style.height = h+'px'; 
+   }
+
+</script>
+</head>
+<body onload="myload()">
+<div id='area'>
+   <div id='title'>HbbTV Application Smart and Haiku Test # IP Playback</div>
+   <div id='stamp'><a target='_blank' href='https://www.linkedin.com/in/shunmugasundaramp/'>Shunmuga Sundaram P</a></div>
+   <div id="btn_group"></div>
+   <ul id="menu" class="menu" style="left: 20px; top: 100px;"></ul>
+   <div id="infocaption_group">
+      <div class="infocaption">PlayPosition :</div>
+      <div class="infocaption">Duration :</div>
+      <div class="infocaption">PlayState :</div>
+   </div>
+
+   <div id="infovalue_group">
+      <div id="play_position" class="infovalue"></div>
+      <div id="play_duration" class="infovalue"></div>
+      <div id="play_state" class="infovalue"></div>
+   </div>
+</div>
+
+<object id="avcontrol" class="avcontrol" type="video/mp4"></object>
+</body>
+</html>

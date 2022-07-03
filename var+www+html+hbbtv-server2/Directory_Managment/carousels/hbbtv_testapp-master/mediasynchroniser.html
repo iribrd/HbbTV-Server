@@ -1,0 +1,320 @@
+<html>
+<!--<link rel="stylesheet" type="text/css" href="res/css/base.css" />-->
+<style type="text/css">
+body {
+   background-color: white;
+}
+.plugin {
+   width: 40px;
+   height: 30px;
+   color: red;
+   display: none;
+}
+.nottested {
+   color: black;
+}
+.passed {
+   color: green;
+}
+.failed {
+   color: red;
+}
+.type {
+   position: absolute;
+   color: white;
+   width: 490px;
+   height: 20px;
+   padding: 5px;
+   //background-color: rgb(200,200,200);
+   border: 1px solid black;
+}
+.head {
+   position: absolute;
+   color: white;
+   text-align: center;
+   width: 90px;
+   background-color: rgb(57,6,74);
+   height: 20px;
+   padding: 5px;
+   border: 1px solid black;
+}
+.issupported {
+   position: absolute;
+   width: 20px;
+   height: 20px;
+}
+#res {
+   position:absolute;
+   left:620px;
+   top:170px;
+   height: 450px;
+   width: 600px;
+   overflow-y: scroll;
+   border: 2px solid black;
+   color:black;
+   font-size:14px;
+   padding: 10px;
+}
+#latestupdate {
+   position:absolute;
+   left:620px;
+   top:10px;
+   height: 120px;
+   width: 600px;
+   border: 2px solid black;
+   color:black;
+   font-size:14px;
+   padding: 10px;
+}
+</style>
+<script type="text/javascript">
+
+var log = [];
+var maxline = 0;
+var msobj = null;
+
+printAction = function(cmd) {
+   log[maxline] = 'Calling <span style="color:blue;">'+cmd+'</span>';
+   ++maxline;
+}
+
+printException = function(e) {
+   log[maxline] = '<span style="color:red;">Exception: '+e+'</span>';
+   ++maxline;
+}
+
+printError = function(e) {
+   log[maxline] = '<span style="color:red;">Error: '+e+'</span>';
+   ++maxline;
+}
+
+printLogs = function() {
+   var startline;
+   if (maxline-30 < 0) {
+      startline = 0;
+   } else {
+      startline = maxline - 30;
+   }
+   var buf = '';
+   for (; startline < maxline; ++startline) {
+      buf += log[startline] + '<br>';
+   }
+   document.getElementById('res').innerHTML = buf;
+}
+
+latestupdate = function() {
+   if (msobj) {
+      var buf = '';
+      buf += 'nrOfSlaves: ' + msobj.nrOfSlaves;
+      buf += '<br>lastError: ' + msobj.lastError;
+      buf += '<br>interDeviceSyncEnabled: ' + msobj.interDeviceSyncEnabled;
+      buf += '<br>currentTime: ' + msobj.currentTime;
+      document.getElementById('latestupdate').innerHTML = buf;
+   }
+}
+
+bindToCurrentChannel = function() {
+   var vb = document.getElementById("vb");
+   printAction('bindToCurrentChannel()');
+   try {
+      vb.bindToCurrentChannel();
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+nextChannel = function() {
+   var vb = document.getElementById("vb");
+   printAction('nextChannel()');
+   try {
+      vb.nextChannel();
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+previousChannel = function() {
+   var vb = document.getElementById("vb");
+   printAction('previousChannel()');
+   try {
+      vb.previousChannel();
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+avcontrolPlay = function() {
+   var url = 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4';
+   var av = document.getElementById("av");
+   printAction('avcontrol.play('+url+')');
+   try {
+      av.data = url;
+      av.play(1);
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+initMediaSynchroniserVB = function() {
+   var vb = document.getElementById("vb");
+   printAction('initMediaSynchroniser(video/broadcast)');
+   try {
+      msobj.initMediaSynchroniser(vb, 'urn:dvb:css:timeline:temi:8:1');
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+initMediaSynchroniserAV = function() {
+   var av = document.getElementById("av");
+   printAction('initMediaSynchroniser(avcontrol)');
+   try {
+      msobj.initMediaSynchroniser(av, 'urn:dvb:css:timeline:temi:8:1');
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+addMediaObjectVB = function() {
+   var vb = document.getElementById("vb");
+   printAction('addMediaObject(video/broadcast)');
+   try {
+      msobj.addMediaObject(vb, 'urn:dvb:css:timeline:temi:8:1', {'tlvMaster' : 12345, 'tlvOther' : 12445});
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+addMediaObjectAV = function() {
+   var av = document.getElementById("av");
+   printAction('addMediaObject(avcontrol)');
+   try {
+      msobj.addMediaObject(av, 'urn:dvb:css:timeline:temi:8:1', {'tlvMaster' : 12345, 'tlvOther' : 12445});
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+removeMediaObjectVB = function() {
+   var vb = document.getElementById("vb");
+   printAction('removeMediaObject(video/broadcast)');
+   try {
+      msobj.removeMediaObject(vb);
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+removeMediaObjectAV = function() {
+   var av = document.getElementById("av");
+   printAction('removeMediaObject(avcontrol)');
+   try {
+      msobj.removeMediaObject(av);
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+enableInterDeviceSync = function() {
+   printAction('enableInterDeviceSync()');
+   try {
+      msobj.enableInterDeviceSync();
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+disableInterDeviceSync = function() {
+   printAction('disableInterDeviceSync()');
+   try {
+      msobj.disableInterDeviceSync();
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+updateCorrelationTimestampVB = function() {
+   var vb = document.getElementById("vb");
+   printAction('updateCorrelationTimestamp(video/broadcast)');
+   try {
+      msobj.updateCorrelationTimestamp(vb, {'tlvMaster' : 12345, 'tlvOther' : 12445});
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+updateCorrelationTimestampAV = function() {
+   var av = document.getElementById("av");
+   printAction('updateCorrelationTimestamp(avcontrol)');
+   try {
+      msobj.updateCorrelationTimestamp(av, {'tlvMaster' : 12345, 'tlvOther' : 12445});
+   } catch(e) {
+      printException(e);
+   }
+   printLogs();
+}
+
+getError = function(lastError, lastErrorSource) {
+   printError(lastError);
+   printLogs();
+}
+
+myload = function() {
+   msobj = window.oipfObjectFactory.createMediaSynchroniser();
+   msobj.onError = getError;
+   window.setInterval(latestupdate, 1000);
+   /*
+    window.setTimeout(function(){
+	try {
+		var lastError = ms.lastError;
+		var lastErrorSource = ms.lastErrorSource;
+		var nrOfSlaves = ms.nrOfSlaves;
+		var interDeviceSyncEnabled = ms.interDeviceSyncEnabled;
+		var interDeviceSyncDispersion = ms.interDeviceSyncDispersion;
+		var minSyncBufferSize = ms.minSyncBufferSize;
+		var maxBroadbandStreamsWithBroadcast = ms.maxBroadbandStreamsWithBroadcast;
+		var maxBroadbandStreamsNoBroadcast = ms.maxBroadbandStreamsNoBroadcast;
+		var currentTime = ms.currentTime;
+		document.getElementById('res').innerHTML = log + 'Successfully done...';
+	} catch(e) {
+		document.getElementById('res').innerHTML = log + e;
+    }
+    }, 5000);
+    */
+};
+
+</script>
+<body onload="myload()">
+<object id="vb" type="video/broadcast">Plugin FAILED to load</object>
+<object id="av" type="video/mp4">Plugin FAILED to load</object><br>
+<input type="button" onclick="bindToCurrentChannel()" value="bindToCurrentChannel"></input><br>
+<input type="button" onclick="avcontrolPlay()" value="avcontrol.play"></input><br>
+<input type="button" onclick="initMediaSynchroniserVB()" value="initMediaSynchroniserVB"></input><br>
+<input type="button" onclick="initMediaSynchroniserAV()" value="initMediaSynchroniserAV"></input><br>
+<input type="button" onclick="addMediaObjectVB()" value="addMediaObjectVB"></input><br>
+<input type="button" onclick="addMediaObjectAV()" value="addMediaObjectAV"></input><br>
+<input type="button" onclick="removeMediaObjectVB()" value="removeMediaObjectVB"></input><br>
+<input type="button" onclick="removeMediaObjectAV()" value="removeMediaObjectAV"></input><br>
+<input type="button" onclick="enableInterDeviceSync()" value="enableInterDeviceSync"></input><br>
+<input type="button" onclick="disableInterDeviceSync()" value="disableInterDeviceSync"></input><br>
+<input type="button" onclick="updateCorrelationTimestampVB()" value="updateCorrelationTimestampVB"></input><br>
+<input type="button" onclick="updateCorrelationTimestampAV()" value="updateCorrelationTimestampAV"></input><br>
+<input type="button" onclick="nextChannel()" value="nextChannel"></input><br>
+<input type="button" onclick="previousChannel()" value="previousChannel"></input><br>
+<div id='res'>Logs...</div>
+<div id='latestupdate'>Latest Update...</div>
+</body>
+</html>
